@@ -40,7 +40,7 @@
   "repositories": [
     {
       "name": "egovframe-runtime",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-runtime",
+      "path": "<egovframework-github>/egovframe-runtime",
       "branch": "main",
       "commit": "77f3fa7",
       "origin": "https://github.com/eGovFramework/egovframe-runtime.git",
@@ -860,7 +860,7 @@
     },
     {
       "name": "egovframe-mobile-device-api-legacy",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-mobile-device-api-legacy",
+      "path": "<egovframework-github>/egovframe-mobile-device-api-legacy",
       "branch": "main",
       "commit": "286c602",
       "origin": "https://github.com/eGovFramework/egovframe-mobile-device-api-legacy.git",
@@ -18079,7 +18079,7 @@
     },
     {
       "name": "egovframe-common-components",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-common-components",
+      "path": "<egovframework-github>/egovframe-common-components",
       "branch": "main",
       "commit": "2dee1457",
       "origin": "https://github.com/eGovFramework/egovframe-common-components.git",
@@ -19723,7 +19723,7 @@
     },
     {
       "name": "egovframe-development",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-development",
+      "path": "<egovframework-github>/egovframe-development",
       "branch": "main",
       "commit": "ccc44274",
       "origin": "https://github.com/eGovFramework/egovframe-development.git",
@@ -20312,7 +20312,7 @@
     },
     {
       "name": "egovframe-simple-homepage-template",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-simple-homepage-template",
+      "path": "<egovframework-github>/egovframe-simple-homepage-template",
       "branch": "main",
       "commit": "8a12e1f",
       "origin": "https://github.com/eGovFramework/egovframe-simple-homepage-template.git",
@@ -20494,7 +20494,7 @@
     },
     {
       "name": "egovframe-portal-site-template",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-portal-site-template",
+      "path": "<egovframework-github>/egovframe-portal-site-template",
       "branch": "main",
       "commit": "28524e5",
       "origin": "https://github.com/eGovFramework/egovframe-portal-site-template.git",
@@ -20781,7 +20781,7 @@
     },
     {
       "name": "egovframe-enterprise-business-template",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-enterprise-business-template",
+      "path": "<egovframework-github>/egovframe-enterprise-business-template",
       "branch": "main",
       "commit": "cbe4989",
       "origin": "https://github.com/eGovFramework/egovframe-enterprise-business-template.git",
@@ -21069,7 +21069,7 @@
     },
     {
       "name": "egovframe-template-simple-backend",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-template-simple-backend",
+      "path": "<egovframework-github>/egovframe-template-simple-backend",
       "branch": "main",
       "commit": "a2f02b1",
       "origin": "https://github.com/eGovFramework/egovframe-template-simple-backend.git",
@@ -21241,7 +21241,7 @@
     },
     {
       "name": "egovframe-template-simple-react",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-template-simple-react",
+      "path": "<egovframework-github>/egovframe-template-simple-react",
       "branch": "main",
       "commit": "226bcdc",
       "origin": "https://github.com/eGovFramework/egovframe-template-simple-react.git",
@@ -21352,7 +21352,7 @@
     },
     {
       "name": "egovframe-msa-edu",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-msa-edu",
+      "path": "<egovframework-github>/egovframe-msa-edu",
       "branch": "main",
       "commit": "5c9c79b",
       "origin": "https://github.com/eGovFramework/egovframe-msa-edu.git",
@@ -22028,7 +22028,7 @@
     },
     {
       "name": "egovframe-boot-sample-java-config",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-boot-sample-java-config",
+      "path": "<egovframework-github>/egovframe-boot-sample-java-config",
       "branch": "main",
       "commit": "6ffb9c5",
       "origin": "https://github.com/eGovFramework/egovframe-boot-sample-java-config.git",
@@ -22140,7 +22140,7 @@
     },
     {
       "name": "egovframe-web-sample",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-web-sample",
+      "path": "<egovframework-github>/egovframe-web-sample",
       "branch": "main",
       "commit": "e0cd682",
       "origin": "https://github.com/eGovFramework/egovframe-web-sample.git",
@@ -22253,7 +22253,7 @@
     },
     {
       "name": "homebrew-egovframe",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\homebrew-egovframe",
+      "path": "<egovframework-github>/homebrew-egovframe",
       "branch": "main",
       "commit": "b4b7b30",
       "origin": "https://github.com/eGovFramework/homebrew-egovframe.git",
@@ -22283,7 +22283,7 @@
     },
     {
       "name": "egovframe-docs",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-docs",
+      "path": "<egovframework-github>/egovframe-docs",
       "branch": "main",
       "commit": "0834e31f",
       "origin": "https://github.com/eGovFramework/egovframe-docs.git",
@@ -24696,7 +24696,7 @@
     },
     {
       "name": "egovframe-msa-common-components",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-msa-common-components",
+      "path": "<egovframework-github>/egovframe-msa-common-components",
       "branch": "main",
       "commit": "45051c6",
       "origin": "https://github.com/eGovFramework/egovframe-msa-common-components.git",
@@ -25441,7 +25441,7 @@
     },
     {
       "name": "egovframe-hands-on-guide",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-hands-on-guide",
+      "path": "<egovframework-github>/egovframe-hands-on-guide",
       "branch": "master",
       "commit": "8c3b194",
       "origin": "https://github.com/eGovFramework/egovframe-hands-on-guide.git",
@@ -25681,7 +25681,7 @@
     },
     {
       "name": "egovframe-operating-environment-msa",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-operating-environment-msa",
+      "path": "<egovframework-github>/egovframe-operating-environment-msa",
       "branch": "master",
       "commit": "86ca1e9",
       "origin": "https://github.com/eGovFramework/egovframe-operating-environment-msa.git",
@@ -25909,7 +25909,7 @@
     },
     {
       "name": "egovframe-vscode-initializr",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-vscode-initializr",
+      "path": "<egovframework-github>/egovframe-vscode-initializr",
       "branch": "main",
       "commit": "e63321e",
       "origin": "https://github.com/eGovFramework/egovframe-vscode-initializr.git",
@@ -26019,7 +26019,7 @@
     },
     {
       "name": "egovframe-ai-rag",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-ai-rag",
+      "path": "<egovframework-github>/egovframe-ai-rag",
       "branch": "main",
       "commit": "956d416",
       "origin": "https://github.com/eGovFramework/egovframe-ai-rag.git",
@@ -26152,7 +26152,7 @@
     },
     {
       "name": "egovframe-templates-download",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-templates-download",
+      "path": "<egovframework-github>/egovframe-templates-download",
       "branch": "main",
       "commit": "e52d3ef",
       "origin": "https://github.com/eGovFramework/egovframe-templates-download.git",
@@ -26171,7 +26171,7 @@
     },
     {
       "name": "egovframe-ex-cloud-data-stream",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-ex-cloud-data-stream",
+      "path": "<egovframework-github>/egovframe-ex-cloud-data-stream",
       "branch": "main",
       "commit": "629210a",
       "origin": "https://github.com/eGovFramework/egovframe-ex-cloud-data-stream.git",
@@ -26341,7 +26341,7 @@
     },
     {
       "name": "egovframe-mobile-device-api",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-mobile-device-api",
+      "path": "<egovframework-github>/egovframe-mobile-device-api",
       "branch": "main",
       "commit": "a36146b",
       "origin": "https://github.com/eGovFramework/egovframe-mobile-device-api.git",
@@ -26560,7 +26560,7 @@
     },
     {
       "name": "awesome-egovframe",
-      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\awesome-egovframe",
+      "path": "<egovframework-github>/awesome-egovframe",
       "branch": "main",
       "commit": "053ca53",
       "origin": "https://github.com/eGovFramework/awesome-egovframe.git",

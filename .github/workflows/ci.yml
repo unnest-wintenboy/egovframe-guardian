@@ -20,11 +20,14 @@ jobs:
       - name: Validate JSON
         run: |
           python -m json.tool .codex-plugin/plugin.json >/tmp/plugin.json
+          python -m json.tool .claude-plugin/plugin.json >/tmp/claude-plugin.json
+          python -m json.tool .agents/plugins/marketplace.json >/tmp/codex-marketplace.json
+          python -m json.tool .claude-plugin/marketplace.json >/tmp/claude-marketplace.json
           python -m json.tool hooks/hooks.json >/tmp/hooks.json
           python -m json.tool config/egovframe-guardian.json >/tmp/policy.json
       - name: Compile scripts
         run: |
-          python -m py_compile scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py skills/egovframe-developer/scripts/audit_coverage.py tests/test_guard.py tests/test_hook_lifecycle.py tests/test_hook_state.py
+          python -m py_compile scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py scripts/validate_release_package.py skills/egovframe-developer/scripts/audit_coverage.py tests/test_guard.py tests/test_hook_lifecycle.py tests/test_hook_state.py
       - name: Type check
         run: |
           uv run --with basedpyright basedpyright scripts tests
@@ -49,6 +52,9 @@ jobs:
       - name: Check coverage
         run: |
           uv run --with pytest --with pytest-cov pytest --cov=egovframe_guard_core --cov=egovframe_guard_hooks --cov=egovframe_guard_state --cov-report=term-missing --cov-fail-under=80
+      - name: Validate public release metadata
+        run: |
+          python scripts/validate_release_package.py .
       - name: Check maturity score
         run: |
-          python scripts/score_maturity.py . --fail-under 110
+          python scripts/score_maturity.py . --fail-under 130

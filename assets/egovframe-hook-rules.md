@@ -25,5 +25,5 @@ Scan mode exits non-zero for high-confidence errors; hook mode returns structure
 Run manually:
 
 ```bash
-python C:/Users/SIL/plugins/egovframe-guardian/scripts/egovframe_guard.py --mode scan --root .
+python scripts/egovframe_guard.py --mode scan --root .
 ```

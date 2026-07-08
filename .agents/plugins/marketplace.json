@@ -1,0 +1,21 @@
+{
+  "name": "egovframe-guardian",
+  "interface": {
+    "displayName": "eGovFrame Guardian"
+  },
+  "plugins": [
+    {
+      "name": "egovframe-guardian",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/unnest-wintenboy/egovframe-guardian.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

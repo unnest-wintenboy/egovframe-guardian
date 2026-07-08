@@ -1,7 +1,9 @@
 # Privacy Policy
 
-eGovFrame Guardian runs locally inside Codex.
+eGovFrame Guardian runs locally inside Codex or Claude Code.
 
-The plugin does not intentionally collect, transmit, sell, or share user data. Hook commands inspect files under the active workspace to produce local guardrail findings.
+The plugin does not intentionally collect, transmit, sell, or share user data.
 
-If this plugin is later published through a remote marketplace, replace this local policy with a public privacy policy URL owned by the plugin maintainer.
+Hook commands inspect files under the active workspace to produce local guardrail findings. Those findings are returned to the host application as local hook output.
+
+The plugin bundles reference data derived from public eGovFrame portal pages and public eGovFrame GitHub repositories. It does not require a hosted service, API key, or external telemetry endpoint.

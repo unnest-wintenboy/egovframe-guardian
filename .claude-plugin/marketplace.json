@@ -1,0 +1,42 @@
+{
+  "name": "egovframe-guardian",
+  "owner": {
+    "name": "eGovFrame Guardian Maintainers"
+  },
+  "description": "Public marketplace catalog for the eGovFrame Guardian Claude Code plugin.",
+  "version": "0.1.0",
+  "plugins": [
+    {
+      "name": "egovframe-guardian",
+      "displayName": "eGovFrame Guardian",
+      "source": {
+        "source": "github",
+        "repo": "unnest-wintenboy/egovframe-guardian",
+        "ref": "main"
+      },
+      "description": "eGovFrame development guidance, examples, and standard-compliance guardrails.",
+      "version": "0.1.0",
+      "author": {
+        "name": "eGovFrame Guardian Maintainers"
+      },
+      "homepage": "https://github.com/unnest-wintenboy/egovframe-guardian#readme",
+      "repository": "https://github.com/unnest-wintenboy/egovframe-guardian",
+      "license": "MIT",
+      "category": "Developer Tools",
+      "tags": [
+        "egovframe",
+        "spring",
+        "mybatis",
+        "compliance",
+        "guardrails"
+      ],
+      "keywords": [
+        "egovframe",
+        "spring",
+        "mybatis",
+        "government-framework",
+        "claude-code-plugin"
+      ]
+    }
+  ]
+}

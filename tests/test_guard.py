@@ -186,10 +186,10 @@ def test_project_policy_accepts_utf8_bom(tmp_path: Path) -> None:
 
 
 def test_release_maturity_score_is_full() -> None:
-    result = run_command([sys.executable, str(SCORE), str(PLUGIN_ROOT), "--fail-under", "110"])
+    result = run_command([sys.executable, str(SCORE), str(PLUGIN_ROOT), "--fail-under", "130"])
     assert result.returncode == 0
     payload = load_json_object(result.stdout)
-    assert payload["score"] == 110
+    assert payload["score"] == 130
     checks = payload["checks"]
     assert isinstance(checks, list)
     for item in checks:

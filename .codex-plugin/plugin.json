@@ -1,11 +1,11 @@
 {
   "name": "egovframe-guardian",
-  "version": "0.1.0+codex.20260708171918",
-  "description": "Codex plugin for eGovFrame development guidance, examples, and local standard-compliance guardrails.",
+  "version": "0.1.0",
+  "description": "Codex plugin for eGovFrame development guidance, examples, and standard-compliance guardrails.",
   "author": {
-    "name": "eGovFrame Guardian local maintainers"
+    "name": "eGovFrame Guardian Maintainers"
   },
-  "homepage": "./README.md",
+  "homepage": "https://github.com/unnest-wintenboy/egovframe-guardian#readme",
   "repository": "https://github.com/unnest-wintenboy/egovframe-guardian",
   "license": "MIT",
   "keywords": [
@@ -20,9 +20,12 @@
   "interface": {
     "displayName": "eGovFrame Guardian",
     "shortDescription": "Develop and review eGovFrame projects with local standards guardrails.",
-    "longDescription": "Packages the eGovFrame developer skill, crawled official portal references, repository atlas, reusable examples, and hook-driven project checks for common eGovFrame architecture, mapper, transaction, and secret-handling issues.",
-    "developerName": "eGovFrame Guardian local maintainers",
+    "longDescription": "Packages the eGovFrame developer skill, official portal reference bundle, repository atlas, reusable examples, and hook-driven project checks for common eGovFrame architecture, mapper, transaction, and secret-handling issues.",
+    "developerName": "eGovFrame Guardian Maintainers",
     "category": "Developer Tools",
+    "websiteURL": "https://github.com/unnest-wintenboy/egovframe-guardian",
+    "privacyPolicyURL": "https://github.com/unnest-wintenboy/egovframe-guardian/blob/main/docs/privacy.md",
+    "termsOfServiceURL": "https://github.com/unnest-wintenboy/egovframe-guardian/blob/main/docs/terms.md",
     "brandColor": "#1F6FEB",
     "composerIcon": "./assets/icon.svg",
     "logo": "./assets/logo.svg",

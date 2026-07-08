@@ -1,17 +1,4 @@
-#!/usr/bin/env -S uv run --script
-# /// script
-# requires-python = ">=3.11"
-# ///
-
-# ─── How to run ───
-# 1. Install uv (if not installed):
-#      curl -LsSf https://astral.sh/uv/install.sh | sh
-# 2. Run directly:
-#      uv run scripts/score_maturity.py [PLUGIN_ROOT] [--fail-under N]
-# 3. Or run with Python when no third-party dependencies are needed:
-#      python scripts/score_maturity.py [PLUGIN_ROOT] [--fail-under N]
-# ──────────────────
-
+#!/usr/bin/env python3
 from __future__ import annotations
 
 import json
@@ -22,6 +9,7 @@ from typing import Final, TypeAlias
 
 JsonScalar: TypeAlias = None | bool | int | float | str
 JsonValue: TypeAlias = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
+
 REQUIRED_HOOK_EVENTS: Final = (
     "SessionStart",
     "UserPromptSubmit",
@@ -52,7 +40,7 @@ class ScoreReport:
 
 def parse_args(argv: list[str]) -> tuple[Path, int]:
     root = Path.cwd()
-    fail_under = 110
+    fail_under = 130
     index = 0
     while index < len(argv):
         token = argv[index]
@@ -96,15 +84,18 @@ def score(root: Path) -> ScoreReport:
         Check("manifest-required", 10, has_all(manifest, ("name", "version", "description", "author", "interface")), "required identity fields"),
         Check("distribution-metadata", 12, has_all(manifest, ("homepage", "repository", "license", "keywords")), "homepage, repository, license, keywords"),
         Check("interface-rich-media", 8, has_all(interface_data, ("brandColor", "composerIcon", "logo", "screenshots")), "brand color, icon, logo, screenshots"),
-        Check("local-policy-docs", 8, (root / "docs" / "privacy.md").exists() and (root / "docs" / "terms.md").exists(), "local privacy and terms documents"),
+        Check("public-policy-docs", 8, (root / "docs" / "privacy.md").exists() and (root / "docs" / "terms.md").exists(), "public privacy and terms documents"),
         Check("skill-bundle", 10, (root / "skills" / "egovframe-developer" / "SKILL.md").exists(), "bundled eGovFrame skill"),
         Check("hook-bundle", 10, has_required_hooks(root), "required lifecycle hook configuration"),
         Check("guard-script", 10, (root / "scripts" / "egovframe_guard.py").exists(), "guard script"),
         Check("hook-policy", 8, (root / "config" / "egovframe-guardian.json").exists(), "severity and suppression policy"),
-        Check("readme-docs", 8, any(root.glob("README*")), "README documentation"),
+        Check("readme-docs", 8, (root / "README.md").exists(), "README documentation"),
         Check("license-file", 6, (root / "LICENSE").exists() or (root / "LICENSE.md").exists(), "license file"),
         Check("tests-dir", 10, (root / "tests").exists() and any((root / "tests").glob("test_*.py")), "pytest tests"),
-        Check("ci-workflow", 10, any((root / ".github" / "workflows").glob("*.yml")), "GitHub Actions workflow"),
+        Check("ci-workflow", 10, (root / ".github" / "workflows" / "ci.yml").exists(), "GitHub Actions CI workflow"),
+        Check("codex-marketplace", 8, (root / ".agents" / "plugins" / "marketplace.json").exists(), "Codex marketplace catalog"),
+        Check("claude-plugin", 8, (root / ".claude-plugin" / "plugin.json").exists() and (root / ".claude-plugin" / "marketplace.json").exists(), "Claude Code plugin and marketplace metadata"),
+        Check("release-workflow", 4, (root / ".github" / "workflows" / "release.yml").exists(), "GitHub release workflow"),
     )
     total = sum(item.weight for item in checks if item.passed)
     return ScoreReport(total, sum(item.weight for item in checks), checks)
