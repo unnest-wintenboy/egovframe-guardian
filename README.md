@@ -62,49 +62,56 @@ claude --plugin-dir .
 
 ## 무엇이 들어있나요
 
-| 필요 | 포함된 것 |
-| --- | --- |
-| 표준에 맞춰 개발 | classic MVC, Boot REST, MyBatis, security, batch, MSA, compatibility, source refresh 작업을 돕는 `egovframe-developer` skill |
-| 에이전트 맥락 보강 | 표준프레임워크 소개, 개발 가이드, 다운로드, 개발자 참여, 기술 지원, 호환성 확인, v5.0.0 하이라이트를 반영한 포털 기반 reference |
-| 바로 시작할 예제 | MVC CRUD, Boot REST CRUD, login/security, batch job, MSA service structure, React client integration 예제 |
-| 어긋남 조기 감지 | controller SQL leakage, 누락된 mapper namespace, literal secret, transaction 누락, mapper discovery gap, eGovFrame runtime metadata 누락을 잡는 guard scanner |
-| 믿고 배포 | validation, tests, coverage, maturity scoring, package checks, archives, checksums, GitHub Releases를 담당하는 GitHub Actions |
+| 이름 | 쉽게 말하면 | 언제 쓰나요 |
+| --- | --- | --- |
+| `egovframe-developer` skill | 에이전트가 표준프레임워크 방식으로 일하도록 돕는 작업 설명서 | 코드 작성, 리뷰, 마이그레이션, 호환성 확인을 맡길 때 |
+| 포털 기반 reference | 공식 eGovFrame 내용을 읽기 쉽게 정리한 참고 자료 | 에이전트가 일반 Spring 방식으로만 답하지 않게 하고 싶을 때 |
+| 예제 코드 | 바로 따라 볼 수 있는 MVC, Boot REST, MyBatis, security, batch, MSA 예제 | 새 기능의 기본 모양을 잡을 때 |
+| hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
+| scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
+| CI/CD | 배포 전에 자동으로 도는 검증 흐름 | 플러그인을 공개하거나 release를 만들 때 |
 
-## 이렇게 써보세요
+## Skill은 이렇게 씁니다
+
+Skill은 별도의 앱 버튼이 아니라, 에이전트에게 “이 기준으로 일해줘”라고 알려주는 작업 모드입니다. 플러그인을 켠 뒤 프롬프트에 `eGovFrame Guardian` 또는 `egovframe-developer`를 말하면 됩니다.
+
+좋은 요청은 짧고 구체적이면 됩니다.
 
 ```text
 Use eGovFrame Guardian to review this service and mapper layout.
 ```
 
 ```text
-Use eGovFrame Guardian to build an eGovFrame Boot REST CRUD example with MyBatis.
+eGovFrame Guardian 기준으로 Boot REST CRUD 예제를 MyBatis로 만들어줘.
 ```
 
 ```text
-Use eGovFrame Guardian to check whether this project follows eGovFrame transaction and mapper conventions.
+이 프로젝트가 eGovFrame transaction, mapper, runtime metadata 관례를 지키는지 확인해줘.
 ```
 
 ```text
-Use eGovFrame Guardian to migrate this controller/service/mapper flow toward the current standard.
+이 controller/service/mapper 흐름을 현재 표준프레임워크 스타일로 정리해줘.
 ```
 
-## 가드레일
+에이전트는 이 skill을 읽고 공식 포털 요약, repo index, 예제 코드, scanner 규칙을 함께 참고합니다. 가능하면 작업 목적, 확인할 폴더, 사용 중인 eGovFrame 버전, classic MVC인지 Boot인지도 같이 알려주세요.
 
-플러그인은 Codex와 Claude 호환 plugin 환경에서 동작하는 lifecycle hook을 `hooks/hooks.json`에 설치합니다.
+## Hook은 언제, 왜 발동되나요
 
-| Hook | 역할 |
-| --- | --- |
-| `SessionStart` | eGovFrame skill과 guardrail이 준비되었음을 알립니다 |
-| `UserPromptSubmit` | framework, runtime, MyBatis, compatibility, AI RAG, VS Code, Istio, OpenTelemetry, Flutter device APIs 등 관련 prompt에 eGovFrame 맥락을 추가합니다 |
-| `PreToolUse` | 명시적으로 허용되지 않은 eGovFrame 또는 plugin 핵심 경로 대상 destructive command를 차단합니다 |
-| `PermissionRequest` | 보호 경로에 대한 destructive approval request를 거부합니다 |
-| `PostToolUse` | edit/write tool 이후 guard scanner를 실행합니다 |
-| `SubagentStart` | subagent에도 같은 포털 기반 eGovFrame 맥락을 제공합니다 |
-| `SubagentStop` | 추적 중인 eGovFrame finding이 남아 있으면 subagent가 종료하지 못하게 합니다 |
-| `PostCompact` | conversation compaction 이후 guard context를 복원합니다 |
-| `Stop` | 에이전트가 턴을 끝내기 전에 추적 중인 finding을 확인하고, 필요하면 한 번 더 계속 작업하게 합니다 |
+Hook은 사용자가 직접 실행하는 명령이 아닙니다. Codex나 Claude Code가 작업 흐름 중 특정 순간에 자동으로 부르는 작은 안전장치입니다. 목적은 에이전트가 eGovFrame 기준을 잊지 않게 하고, 위험한 작업을 하기 전에 한 번 더 멈추게 하는 것입니다.
 
-Destructive shell command를 허용하려면 명시적인 token `egovframe-guardian:allow-destructive`가 command에 포함되어야 합니다.
+| 언제 발동되나요 | 왜 필요한가요 | 무슨 일이 일어나나요 |
+| --- | --- | --- |
+| 세션이 시작될 때 `SessionStart` | 플러그인이 켜져 있다는 사실을 에이전트가 바로 알아야 합니다 | eGovFrame skill과 guardrail이 준비됐다고 알려줍니다 |
+| 프롬프트를 보낼 때 `UserPromptSubmit` | 사용자가 eGovFrame, MyBatis, runtime, compatibility 같은 말을 하면 표준프레임워크 맥락이 필요합니다 | 공식 포털 기반 맥락을 프롬프트에 더해 일반 Spring 답변으로 흐르지 않게 합니다 |
+| 도구를 쓰기 직전 `PreToolUse` | 삭제, 이동, 덮어쓰기 같은 명령은 실수하면 복구가 어렵습니다 | eGovFrame 또는 플러그인 핵심 경로를 건드리는 destructive command를 막습니다 |
+| 권한 요청이 날 때 `PermissionRequest` | 위험한 명령은 승인 전에 한 번 더 걸러야 합니다 | 보호 경로에 대한 destructive approval request를 거부합니다 |
+| 파일을 고친 직후 `PostToolUse` | 문제는 코드를 쓴 뒤 바로 보는 것이 가장 싸게 고칠 수 있습니다 | scanner를 돌려 controller SQL, mapper, transaction, secret 같은 문제를 찾습니다 |
+| subagent가 시작될 때 `SubagentStart` | 다른 에이전트도 같은 기준으로 일해야 합니다 | subagent에게도 eGovFrame 맥락을 전달합니다 |
+| subagent가 끝나려 할 때 `SubagentStop` | 발견된 문제가 남았는데 끝내면 놓치기 쉽습니다 | 추적 중인 finding이 남아 있으면 종료를 막습니다 |
+| 대화가 압축된 뒤 `PostCompact` | 긴 작업 중 압축이 되면 중요한 기준이 빠질 수 있습니다 | eGovFrame guard context를 다시 복원합니다 |
+| 턴을 끝내기 직전 `Stop` | 마지막에 남은 blocking finding을 한 번 더 봐야 합니다 | 필요하면 에이전트가 한 번 더 계속 작업하게 합니다 |
+
+위험한 shell command를 정말 실행해야 한다면 command에 `egovframe-guardian:allow-destructive`를 명시해야 합니다. 이 token은 실수로 삭제성 명령이 통과하지 않게 만드는 확인 장치입니다.
 
 ## 스캐너 규칙
 

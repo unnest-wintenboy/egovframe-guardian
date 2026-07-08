@@ -62,15 +62,20 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 
 ## What You Get
 
-| Need | Included |
-| --- | --- |
-| Build with the standard | `egovframe-developer` skill for classic MVC, Boot REST, MyBatis, security, batch, MSA, compatibility, and source refresh work |
-| Keep agents grounded | Portal-aligned references for framework overview, development guide, downloads, developer participation, technical support, compatibility confirmation, and v5.0.0 highlights |
-| Start from working shapes | Example code for MVC CRUD, Boot REST CRUD, login/security, batch jobs, MSA service structure, and React client integration |
-| Catch drift early | Guard scanner for controller SQL leakage, missing mapper namespaces, literal secrets, missing transactions, mapper discovery gaps, and missing eGovFrame runtime metadata |
-| Ship with confidence | GitHub Actions for validation, tests, coverage, maturity scoring, package checks, archives, checksums, and GitHub Releases |
+| Name | Plain meaning | When to use it |
+| --- | --- | --- |
+| `egovframe-developer` skill | A work guide that helps the agent follow eGovFrame patterns | When asking for implementation, review, migration, or compatibility checks |
+| Portal-based references | Easy-to-use notes based on official eGovFrame material | When you want the agent to avoid generic Spring-only answers |
+| Example code | Ready shapes for MVC, Boot REST, MyBatis, security, batch, and MSA work | When starting a new feature or asking for a reference implementation |
+| Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
+| Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
+| CI/CD | Automated validation before public release | When publishing the plugin or cutting a release |
 
-## Use It Like This
+## How To Use The Skill
+
+The skill is not a separate app button. It is a work mode you name in your prompt. After enabling the plugin, mention `eGovFrame Guardian` or `egovframe-developer` in the request.
+
+Good prompts can stay short and direct.
 
 ```text
 Use eGovFrame Guardian to review this service and mapper layout.
@@ -81,30 +86,32 @@ Use eGovFrame Guardian to build an eGovFrame Boot REST CRUD example with MyBatis
 ```
 
 ```text
-Use eGovFrame Guardian to check whether this project follows eGovFrame transaction and mapper conventions.
+Use eGovFrame Guardian to check whether this project follows eGovFrame transaction, mapper, and runtime metadata conventions.
 ```
 
 ```text
 Use eGovFrame Guardian to migrate this controller/service/mapper flow toward the current standard.
 ```
 
-## The Guardrails
+The agent reads the bundled skill and uses the portal notes, repo indexes, example code, and scanner rules together. For best results, include the goal, target folder, eGovFrame version, and whether the project is classic MVC or Boot.
 
-The plugin installs `hooks/hooks.json` with lifecycle hooks for Codex and Claude-compatible plugin environments.
+## When And Why Hooks Run
 
-| Hook | What it does |
-| --- | --- |
-| `SessionStart` | Announces that the eGovFrame skill and guardrails are available |
-| `UserPromptSubmit` | Adds eGovFrame context when prompts mention framework, runtime, MyBatis, compatibility, AI RAG, VS Code, Istio, OpenTelemetry, Flutter device APIs, or related terms |
-| `PreToolUse` | Blocks destructive commands against eGovFrame or plugin-critical paths unless explicitly allowed |
-| `PermissionRequest` | Denies destructive approval requests for protected paths |
-| `PostToolUse` | Runs the guard scanner after edit/write tools |
-| `SubagentStart` | Gives subagents the same portal-aligned eGovFrame context |
-| `SubagentStop` | Prevents subagents from finishing while tracked eGovFrame findings remain |
-| `PostCompact` | Restores guard context after conversation compaction |
-| `Stop` | Checks tracked findings before the agent ends the turn and asks it to continue once when needed |
+Hooks are not commands you run by hand. Codex or Claude Code calls them automatically at specific points while the agent works. Their job is to keep eGovFrame context close and stop risky actions before they cause damage.
 
-Destructive shell commands must include the explicit token `egovframe-guardian:allow-destructive` before the hook allows them through.
+| When it runs | Why it exists | What happens |
+| --- | --- | --- |
+| Session start `SessionStart` | The agent should know the plugin is active right away | It announces that the eGovFrame skill and guardrails are ready |
+| Prompt submit `UserPromptSubmit` | Prompts that mention eGovFrame, MyBatis, runtime, or compatibility need framework context | It adds portal-aligned context so the answer does not drift into generic Spring guidance |
+| Before a tool call `PreToolUse` | Delete, move, and overwrite commands can be hard to recover from | It blocks destructive commands against eGovFrame or plugin-critical paths |
+| Permission request `PermissionRequest` | Risky commands should be filtered before approval | It denies destructive approval requests for protected paths |
+| After edits or writes `PostToolUse` | Problems are cheapest to fix right after code changes | It runs the scanner for controller SQL, mapper, transaction, secret, and metadata issues |
+| Subagent start `SubagentStart` | Other agents need the same standard | It gives subagents the same eGovFrame context |
+| Subagent stop `SubagentStop` | Findings should not be left behind quietly | It prevents subagents from finishing while tracked findings remain |
+| After compaction `PostCompact` | Long conversations can lose important context after compaction | It restores the eGovFrame guard context |
+| Before turn end `Stop` | Blocking findings deserve one final check | It asks the agent to continue once when unresolved findings remain |
+
+If a destructive shell command is truly needed, the command must include `egovframe-guardian:allow-destructive`. That token is an intentional confirmation step, not a normal everyday option.
 
 ## Scanner Rules
 
