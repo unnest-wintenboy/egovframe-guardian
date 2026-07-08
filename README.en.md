@@ -206,6 +206,10 @@ This plugin contains derived summaries, indexes, and examples based on:
 
 Bundled crawl records and repository atlases are for development guidance. Original upstream project materials remain under their respective source terms.
 
+## License
+
+The code, documentation, and generated mascot asset in this repository are distributed under the [MIT License](LICENSE). Upstream eGovFrame materials referenced or summarized by this plugin remain under their own source terms.
+
 ## Current Publishing Notes
 
 This repository publishes a public self-hosted Codex marketplace catalog because official Codex Plugin Directory self-serve publishing is not generally available yet. Claude Code community marketplace submission still requires Anthropic review after local validation.

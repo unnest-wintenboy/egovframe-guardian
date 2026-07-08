@@ -206,6 +206,10 @@ tests/                                Guard and hook tests
 
 Bundled crawl record와 repository atlas는 개발 가이드를 위한 자료입니다. 원본 upstream project 자료는 각 출처의 조건을 따릅니다.
 
+## 라이선스
+
+이 저장소의 코드, 문서, 생성된 마스코트 asset은 [MIT License](LICENSE)로 배포됩니다. 이 플러그인이 참고하거나 요약한 upstream eGovFrame 자료는 각 원 출처의 조건을 따릅니다.
+
 ## 현재 배포 메모
 
 공식 Codex Plugin Directory의 self-serve publishing은 아직 일반 공개되어 있지 않아, 이 저장소는 public self-hosted Codex marketplace catalog를 제공합니다. Claude Code community marketplace submission은 로컬 검증 이후 Anthropic review가 필요합니다.
