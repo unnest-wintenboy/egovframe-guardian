@@ -36,14 +36,7 @@ jobs:
             python "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" skills/egovframe-developer
           else
             echo "quick_validate.py is not installed in this CI image; coverage audit runs next."
-            python - <<'PY'
-from pathlib import Path
-skill = Path("skills/egovframe-developer/SKILL.md")
-text = skill.read_text(encoding="utf-8")
-assert text.startswith("---\n")
-assert "name: egovframe-developer" in text
-assert "description:" in text
-PY
+            python -c "from pathlib import Path; text = Path('skills/egovframe-developer/SKILL.md').read_text(encoding='utf-8'); assert text.startswith('---\n'); assert 'name: egovframe-developer' in text; assert 'description:' in text"
           fi
       - name: Audit coverage
         env:
