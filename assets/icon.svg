@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="eGovFrame Guardian icon">
+  <rect width="128" height="128" rx="24" fill="#1F6FEB"/>
+  <path d="M64 18 100 32v28c0 25-15 43-36 52-21-9-36-27-36-52V32z" fill="#F6F8FA"/>
+  <path d="M46 65 58 77l26-30" fill="none" stroke="#1F6FEB" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,267 @@
+{
+  "summary": {
+    "org": "egovframework",
+    "source": "https://api.github.com/orgs/egovframework/repos?type=public&per_page=100",
+    "destination": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github",
+    "expected_repositories": 23,
+    "local_git_repositories": 23,
+    "clean_worktrees": 22,
+    "dirty_worktrees": 1,
+    "missing_or_failed": 0
+  },
+  "repositories": [
+    {
+      "name": "egovframe-runtime",
+      "clone_url": "https://github.com/eGovFramework/egovframe-runtime.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-runtime",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-runtime.git",
+      "branch": "main",
+      "commit": "77f3fa7",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-mobile-device-api-legacy",
+      "clone_url": "https://github.com/eGovFramework/egovframe-mobile-device-api-legacy.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-mobile-device-api-legacy",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-mobile-device-api-legacy.git",
+      "branch": "main",
+      "commit": "286c602",
+      "dirty_entries": 0,
+      "note": "checkout repaired with local core.longpaths=true"
+    },
+    {
+      "name": "egovframe-common-components",
+      "clone_url": "https://github.com/eGovFramework/egovframe-common-components.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-common-components",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-common-components.git",
+      "branch": "main",
+      "commit": "2dee1457",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-development",
+      "clone_url": "https://github.com/eGovFramework/egovframe-development.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-development",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-development.git",
+      "branch": "main",
+      "commit": "ccc44274",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-simple-homepage-template",
+      "clone_url": "https://github.com/eGovFramework/egovframe-simple-homepage-template.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-simple-homepage-template",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-simple-homepage-template.git",
+      "branch": "main",
+      "commit": "8a12e1f",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-portal-site-template",
+      "clone_url": "https://github.com/eGovFramework/egovframe-portal-site-template.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-portal-site-template",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-portal-site-template.git",
+      "branch": "main",
+      "commit": "28524e5",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-enterprise-business-template",
+      "clone_url": "https://github.com/eGovFramework/egovframe-enterprise-business-template.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-enterprise-business-template",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-enterprise-business-template.git",
+      "branch": "main",
+      "commit": "cbe4989",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-template-simple-backend",
+      "clone_url": "https://github.com/eGovFramework/egovframe-template-simple-backend.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-template-simple-backend",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-template-simple-backend.git",
+      "branch": "main",
+      "commit": "a2f02b1",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-template-simple-react",
+      "clone_url": "https://github.com/eGovFramework/egovframe-template-simple-react.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-template-simple-react",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-template-simple-react.git",
+      "branch": "main",
+      "commit": "226bcdc",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-msa-edu",
+      "clone_url": "https://github.com/eGovFramework/egovframe-msa-edu.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-msa-edu",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-msa-edu.git",
+      "branch": "main",
+      "commit": "5c9c79b",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-boot-sample-java-config",
+      "clone_url": "https://github.com/eGovFramework/egovframe-boot-sample-java-config.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-boot-sample-java-config",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-boot-sample-java-config.git",
+      "branch": "main",
+      "commit": "6ffb9c5",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-web-sample",
+      "clone_url": "https://github.com/eGovFramework/egovframe-web-sample.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-web-sample",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-web-sample.git",
+      "branch": "main",
+      "commit": "e0cd682",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "homebrew-egovframe",
+      "clone_url": "https://github.com/eGovFramework/homebrew-egovframe.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\homebrew-egovframe",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/homebrew-egovframe.git",
+      "branch": "main",
+      "commit": "b4b7b30",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-docs",
+      "clone_url": "https://github.com/eGovFramework/egovframe-docs.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-docs",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-docs.git",
+      "branch": "main",
+      "commit": "0834e31f",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-msa-common-components",
+      "clone_url": "https://github.com/eGovFramework/egovframe-msa-common-components.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-msa-common-components",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-msa-common-components.git",
+      "branch": "main",
+      "commit": "45051c6",
+      "dirty_entries": 4,
+      "note": "dirty immediately after checkout due upstream .gitattributes text/eol rules on asset files"
+    },
+    {
+      "name": "egovframe-hands-on-guide",
+      "clone_url": "https://github.com/eGovFramework/egovframe-hands-on-guide.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-hands-on-guide",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-hands-on-guide.git",
+      "branch": "master",
+      "commit": "8c3b194",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-operating-environment-msa",
+      "clone_url": "https://github.com/eGovFramework/egovframe-operating-environment-msa.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-operating-environment-msa",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-operating-environment-msa.git",
+      "branch": "master",
+      "commit": "86ca1e9",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-vscode-initializr",
+      "clone_url": "https://github.com/eGovFramework/egovframe-vscode-initializr.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-vscode-initializr",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-vscode-initializr.git",
+      "branch": "main",
+      "commit": "e63321e",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-ai-rag",
+      "clone_url": "https://github.com/eGovFramework/egovframe-ai-rag.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-ai-rag",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-ai-rag.git",
+      "branch": "main",
+      "commit": "956d416",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-templates-download",
+      "clone_url": "https://github.com/eGovFramework/egovframe-templates-download.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-templates-download",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-templates-download.git",
+      "branch": "main",
+      "commit": "e52d3ef",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-ex-cloud-data-stream",
+      "clone_url": "https://github.com/eGovFramework/egovframe-ex-cloud-data-stream.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-ex-cloud-data-stream",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-ex-cloud-data-stream.git",
+      "branch": "main",
+      "commit": "629210a",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "egovframe-mobile-device-api",
+      "clone_url": "https://github.com/eGovFramework/egovframe-mobile-device-api.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\egovframe-mobile-device-api",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/egovframe-mobile-device-api.git",
+      "branch": "main",
+      "commit": "a36146b",
+      "dirty_entries": 0,
+      "note": ""
+    },
+    {
+      "name": "awesome-egovframe",
+      "clone_url": "https://github.com/eGovFramework/awesome-egovframe.git",
+      "path": "C:\\Users\\SIL\\Documents\\Codex\\2026-07-08\\d\\work\\egovframework-github\\awesome-egovframe",
+      "cloned": true,
+      "origin": "https://github.com/eGovFramework/awesome-egovframe.git",
+      "branch": "main",
+      "commit": "053ca53",
+      "dirty_entries": 0,
+      "note": ""
+    }
+  ]
+}

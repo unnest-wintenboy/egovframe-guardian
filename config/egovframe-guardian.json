@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "rules": {
+    "controller-sql": "error",
+    "mapper-namespace": "error",
+    "plain-secret": "error",
+    "mapper-doctype": "warning",
+    "mapper-scan": "warning",
+    "mapper-annotation": "warning",
+    "service-transaction": "warning",
+    "egov-runtime": "warning"
+  },
+  "suppressions": [
+    {
+      "rule": "service-transaction",
+      "path": "**/generated/**",
+      "reason": "Generated source is verified at the generator template boundary."
+    }
+  ]
+}

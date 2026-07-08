@@ -1,0 +1,57 @@
+name: eGovFrame Guardian CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@v4
+      - name: Validate JSON
+        run: |
+          python -m json.tool .codex-plugin/plugin.json >/tmp/plugin.json
+          python -m json.tool hooks/hooks.json >/tmp/hooks.json
+          python -m json.tool config/egovframe-guardian.json >/tmp/policy.json
+      - name: Compile scripts
+        run: |
+          python -m py_compile scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py skills/egovframe-developer/scripts/audit_coverage.py tests/test_guard.py tests/test_hook_lifecycle.py tests/test_hook_state.py
+      - name: Type check
+        run: |
+          uv run --with basedpyright basedpyright scripts tests
+      - name: Validate bundled skill
+        env:
+          PYTHONUTF8: "1"
+        run: |
+          if [ -f "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" ]; then
+            python "$HOME/.codex/skills/.system/skill-creator/scripts/quick_validate.py" skills/egovframe-developer
+          else
+            echo "quick_validate.py is not installed in this CI image; coverage audit runs next."
+            python - <<'PY'
+from pathlib import Path
+skill = Path("skills/egovframe-developer/SKILL.md")
+text = skill.read_text(encoding="utf-8")
+assert text.startswith("---\n")
+assert "name: egovframe-developer" in text
+assert "description:" in text
+PY
+          fi
+      - name: Audit coverage
+        env:
+          PYTHONUTF8: "1"
+        run: |
+          python skills/egovframe-developer/scripts/audit_coverage.py --skill-dir skills/egovframe-developer
+      - name: Run tests
+        run: |
+          uv run --with pytest pytest
+      - name: Check coverage
+        run: |
+          uv run --with pytest --with pytest-cov pytest --cov=egovframe_guard_core --cov=egovframe_guard_hooks --cov=egovframe_guard_state --cov-report=term-missing --cov-fail-under=80
+      - name: Check maturity score
+        run: |
+          python scripts/score_maturity.py . --fail-under 110

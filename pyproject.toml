@@ -1,0 +1,17 @@
+[project]
+name = "egovframe-guardian-plugin"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.basedpyright]
+typeCheckingMode = "all"
+extraPaths = ["scripts"]
+include = ["scripts", "tests"]
+reportAny = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-q"
+pythonpath = ["scripts"]

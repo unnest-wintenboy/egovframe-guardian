@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="180" viewBox="0 0 640 180" role="img" aria-label="eGovFrame Guardian logo">
+  <rect width="640" height="180" rx="20" fill="#F6F8FA"/>
+  <rect x="32" y="32" width="116" height="116" rx="22" fill="#1F6FEB"/>
+  <path d="M90 48 122 60v24c0 23-13 39-32 47-19-8-32-24-32-47V60z" fill="#FFFFFF"/>
+  <path d="M72 91 84 103l24-30" fill="none" stroke="#1F6FEB" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="176" y="82" fill="#0D1117" font-family="Arial, sans-serif" font-size="38" font-weight="700">eGovFrame Guardian</text>
+  <text x="178" y="124" fill="#57606A" font-family="Arial, sans-serif" font-size="22">Codex guardrails for standard framework development</text>
+</svg>

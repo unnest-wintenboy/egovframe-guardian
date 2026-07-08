@@ -1,0 +1,40 @@
+{
+  "name": "egovframe-guardian",
+  "version": "0.1.0+codex.20260708171918",
+  "description": "Codex plugin for eGovFrame development guidance, examples, and local standard-compliance guardrails.",
+  "author": {
+    "name": "eGovFrame Guardian local maintainers"
+  },
+  "homepage": "./README.md",
+  "repository": "https://github.com/unnest-wintenboy/egovframe-guardian",
+  "license": "MIT",
+  "keywords": [
+    "egovframe",
+    "spring",
+    "mybatis",
+    "government-framework",
+    "codex-plugin",
+    "guardrails"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "eGovFrame Guardian",
+    "shortDescription": "Develop and review eGovFrame projects with local standards guardrails.",
+    "longDescription": "Packages the eGovFrame developer skill, crawled official portal references, repository atlas, reusable examples, and hook-driven project checks for common eGovFrame architecture, mapper, transaction, and secret-handling issues.",
+    "developerName": "eGovFrame Guardian local maintainers",
+    "category": "Developer Tools",
+    "brandColor": "#1F6FEB",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.svg",
+    "screenshots": [
+      "./assets/screenshot-guard-report.svg"
+    ],
+    "capabilities": [
+      "skills",
+      "hooks",
+      "local-compliance-scan",
+      "examples"
+    ],
+    "defaultPrompt": "Use the eGovFrame Guardian plugin to build, review, migrate, or verify an eGovFrame project. Consult the bundled eGovFrame developer skill and run the local guardrail scanner before claiming compliance."
+  }
+}

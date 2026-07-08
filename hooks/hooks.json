@@ -1,0 +1,119 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode session",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode session",
+            "statusMessage": "Preparing eGovFrame guardrails"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode prompt",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode prompt",
+            "statusMessage": "Adding eGovFrame development context"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode pre-tool",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode pre-tool",
+            "statusMessage": "Checking eGovFrame critical paths before tool use"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode permission",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode permission",
+            "statusMessage": "Checking eGovFrame permission request"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|apply_patch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode hook",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode hook",
+            "statusMessage": "Checking eGovFrame standard compliance"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode subagent-start",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode subagent-start",
+            "statusMessage": "Adding eGovFrame context to subagent"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode subagent-stop",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode subagent-stop",
+            "timeout": 30,
+            "statusMessage": "Running eGovFrame subagent guard gate"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode post-compact",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode post-compact",
+            "statusMessage": "Restoring eGovFrame guard context"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode stop",
+            "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode stop",
+            "timeout": 30,
+            "statusMessage": "Running eGovFrame final guard gate"
+          }
+        ]
+      }
+    ]
+  }
+}

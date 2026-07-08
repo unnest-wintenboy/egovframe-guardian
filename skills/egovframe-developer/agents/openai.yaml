@@ -1,0 +1,4 @@
+interface:
+  display_name: "eGovFrame Developer"
+  short_description: "Build and verify eGovFrame apps"
+  default_prompt: "Use $egovframe-developer to build an eGovFrame-compliant service from requirements."

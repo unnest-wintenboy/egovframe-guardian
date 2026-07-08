@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.egov.notice.service.impl.NoticeMapper">
+    <select id="selectNotices" parameterType="org.example.egov.notice.service.NoticeSearchCondition" resultType="org.example.egov.notice.service.NoticeSummary">
+        SELECT NOTICE_ID, TITLE, CREATED_AT
+        FROM NOTICE
+        WHERE USE_YN = 'Y'
+        <if test="keyword != null and keyword != ''">
+            AND TITLE LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        ORDER BY NOTICE_ID DESC
+    </select>
+
+    <insert id="insertNotice" parameterType="org.example.egov.notice.service.CreateNoticeCommand">
+        INSERT INTO NOTICE (NOTICE_ID, TITLE, CONTENTS, CREATED_BY, CREATED_AT, USE_YN)
+        VALUES (#{noticeId}, #{title}, #{contents}, #{createdBy}, CURRENT_TIMESTAMP, 'Y')
+    </insert>
+</mapper>
