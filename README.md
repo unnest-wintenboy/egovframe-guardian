@@ -67,7 +67,7 @@ claude --plugin-dir .
 | `egovframe-developer` skill | 에이전트가 표준프레임워크 방식으로 일하도록 돕는 작업 설명서 | 코드 작성, 리뷰, 마이그레이션, 호환성 확인을 맡길 때 |
 | 포털 기반 reference | 공식 eGovFrame 내용을 읽기 쉽게 정리한 참고 자료 | 에이전트가 일반 Spring 방식으로만 답하지 않게 하고 싶을 때 |
 | 예제 코드 | 바로 따라 볼 수 있는 MVC, Boot REST, MyBatis, security, batch, MSA 예제 | 새 기능의 기본 모양을 잡을 때 |
-| ZIP 다운로드 대응 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum 정보를 찾는 참고 자료 | 표준프레임워크 사이트의 ZIP 배포물이 맞는지 확인할 때 |
+| ZIP 다운로드와 배포파일 사용 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum을 찾고 받은 ZIP을 풀기 전에 검사 | 표준프레임워크 사이트의 배포파일을 프로젝트에 적용할 때 |
 | hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
 | scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
 | CI/CD | 배포 전에 자동으로 도는 검증 흐름 | 플러그인을 공개하거나 release를 만들 때 |
@@ -132,6 +132,22 @@ python scripts/egovframe_guard.py --mode scan --root .
 - 명시적인 eGovFrame runtime dependency metadata가 없는 eGovFrame 프로젝트
 
 직접 scan mode에서는 high-confidence error가 exit code `2`를 반환하고, warning은 exit code `0`을 반환합니다. Hook mode에서는 host가 context를 추가하거나, 지원되는 tool call을 거부하거나, hook contract에 따라 턴을 계속할 수 있도록 structured hook JSON을 반환합니다.
+
+## 배포 ZIP 검사
+
+표준프레임워크 사이트에서 ZIP을 받았다면 바로 풀지 말고 먼저 검사하세요.
+
+```bash
+python scripts/egovframe_distribution.py inspect --zip path/to/package.zip --expected-sha1 <portal-sha1> --json
+```
+
+이 검사는 checksum 일치 여부, ZIP-slip 위험 경로, 실행 파일/스크립트 포함 여부, Maven/Gradle/Spring/MyBatis/JSP/SQL 신호, 배포파일 유형을 알려줍니다. 소스 프로젝트 ZIP은 임시 폴더에 푼 뒤 필요한 controller, service, mapper, config, SQL만 선별해서 적용하는 흐름을 권장합니다.
+
+포털 크롤에 잡힌 ZIP 범위를 요약하려면:
+
+```bash
+python scripts/egovframe_distribution.py inventory --portal-json skills/egovframe-developer/references/portal-crawl-records.json --json
+```
 
 ## 설정
 
@@ -201,6 +217,8 @@ README.en.md                          English README
 assets/egovframe-guardian-mascot.png  README mascot logo
 hooks/hooks.json                      Lifecycle hook configuration
 scripts/egovframe_guard.py            Scanner and hook entrypoint
+scripts/egovframe_distribution.py     Distribution ZIP inspector
+scripts/egovframe_distribution_core.py Distribution inspection logic
 skills/egovframe-developer/           Bundled eGovFrame skill and references
 tests/                                Guard and hook tests
 ```

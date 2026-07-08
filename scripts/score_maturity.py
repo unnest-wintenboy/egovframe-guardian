@@ -87,7 +87,14 @@ def score(root: Path) -> ScoreReport:
         Check("public-policy-docs", 8, (root / "docs" / "privacy.md").exists() and (root / "docs" / "terms.md").exists(), "public privacy and terms documents"),
         Check("skill-bundle", 10, (root / "skills" / "egovframe-developer" / "SKILL.md").exists(), "bundled eGovFrame skill"),
         Check("hook-bundle", 10, has_required_hooks(root), "required lifecycle hook configuration"),
-        Check("guard-script", 10, (root / "scripts" / "egovframe_guard.py").exists(), "guard script"),
+        Check(
+            "guard-script",
+            10,
+            (root / "scripts" / "egovframe_guard.py").exists()
+            and (root / "scripts" / "egovframe_distribution.py").exists()
+            and (root / "scripts" / "egovframe_distribution_core.py").exists(),
+            "guard and distribution scripts",
+        ),
         Check("hook-policy", 8, (root / "config" / "egovframe-guardian.json").exists(), "severity and suppression policy"),
         Check("readme-docs", 8, (root / "README.md").exists(), "README documentation"),
         Check("license-file", 6, (root / "LICENSE").exists() or (root / "LICENSE.md").exists(), "license file"),

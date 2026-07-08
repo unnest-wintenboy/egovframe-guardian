@@ -70,10 +70,12 @@ When the user asks about downloads, versions, compatibility SW, or certification
 
 - Read `portal-manual-map.md` first.
 - Read `portal-zip-inventory.md` when the question is about ZIP attachments, package names, checksums, or whether a portal archive is covered.
+- Read `distribution-file-playbook.md` before using, extracting, or adapting files from a downloaded distribution package.
 - Search `portal-crawl-records.json` for the exact menu label or product/version.
 - Preserve source URL, captured date, and whether the record came from a paginated board.
 - ZIP archives are represented by filename, page URL, attachment URL when captured, size text, and checksum text. Do not claim to know internal file trees unless the ZIP has actually been downloaded and inspected.
-- Avoid downloading binary attachments unless the user explicitly asks for the files. If downloading is needed, verify the portal checksum when present, inspect the ZIP listing first, extract only to a temporary/sandbox directory, and never execute bundled scripts automatically.
+- Avoid downloading binary attachments unless the user explicitly asks for the files. If downloading is needed, verify the portal checksum when present, run `python scripts/egovframe_distribution.py inspect --zip <file> --json`, extract only to a temporary/sandbox directory, and never execute bundled scripts automatically.
+- For source-project distributions, apply a curated diff: build files first, then config, mapper/XML, SQL, controller/API, view/client assets, and tests. Do not overwrite the target project wholesale.
 
 ## Implementation Checklist
 

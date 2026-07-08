@@ -6,6 +6,8 @@ The skill bundle is considered complete only when these checks pass:
 
 - Portal crawl JSON exists and parses.
 - Portal ZIP inventory exists and records the download archive policy.
+- Distribution file playbook exists and documents checksum verification, ZIP-slip rejection, sandbox extraction, and curated application flow.
+- `scripts/egovframe_distribution.py` exists and can inspect a downloaded portal ZIP before extraction.
 - Portal sections include all six requested areas.
 - Portal record count is at least the captured baseline of 751.
 - Portal crawl retains at least 250 distinct `.zip` filename mentions from captured pages.
@@ -30,5 +32,5 @@ Run the loop whenever updating the skill:
 
 - Some public portal boards are intentionally not fully fanned out because they have hundreds or thousands of records.
 - Binary downloads are represented by URLs and labels, not embedded files.
-- ZIP package internals are not considered covered until an individual archive is downloaded, checksum-verified, and inspected in a sandbox for that task.
+- ZIP package internals are not considered covered until an individual archive is downloaded, checksum-verified, inspected with `scripts/egovframe_distribution.py`, and extracted only in a sandbox for that task.
 - `egovframe-msa-common-components` may show immediate checkout modifications on Windows due to upstream `.gitattributes` line-ending rules on assets.

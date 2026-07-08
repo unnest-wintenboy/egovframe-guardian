@@ -59,6 +59,8 @@ PLUGIN_CRITICAL_MARKERS: Final = (
     "hooks\\hooks.json",
     "portal-crawl-records",
     "repository-directory",
+    "scripts/egovframe_distribution.py",
+    "scripts\\egovframe_distribution.py",
     "scripts/egovframe_guard.py",
     "scripts\\egovframe_guard.py",
     "skills/egovframe-developer",
@@ -69,17 +71,20 @@ PROMPT_CONTEXT: Final = (
     "official portal areas: introduction/architecture, development guide, downloads, developer "
     "participation, technical support, and compatibility confirmation. Current portal highlights "
     "include v5.0.0, VS Code Extension, AI RAG examples, Istio/OpenTelemetry operating guides, "
-    "and Flutter device API programs. Prefer Controller-Service-Mapper layering and run the "
-    "eGovFrame Guardian scan/Stop gate before claiming compliance."
+    "and Flutter device API programs. For portal ZIP distributions, verify checksums and inspect "
+    "with scripts/egovframe_distribution.py before extraction. Prefer Controller-Service-Mapper "
+    "layering and run the eGovFrame Guardian scan/Stop gate before claiming compliance."
 )
 COMPACT_CONTEXT: Final = (
     "eGovFrame Guardian: after compaction, reload the egovframe-developer skill before eGovFrame "
     "changes. Re-check the portal-aligned areas: runtime, development environment, operating "
-    "environment, common components, mobile, support, and compatibility confirmation."
+    "environment, common components, mobile, support, compatibility confirmation, and distribution "
+    "ZIP inspection workflow."
 )
 SUBAGENT_CONTEXT: Final = (
     "Subagent eGovFrame context: use egovframe-developer evidence first. The portal foregrounds "
     "v5.0.0, development guide/downloads, technical support, compatibility confirmation, VS Code "
     "Extension, AI RAG examples, Istio/OpenTelemetry operating guides, and Flutter device APIs. "
-    "Do not finish without checking Controller-Service-Mapper layering and local guard findings."
+    "Inspect portal ZIP distributions before extraction. Do not finish without checking "
+    "Controller-Service-Mapper layering and local guard findings."
 )

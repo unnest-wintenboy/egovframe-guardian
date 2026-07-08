@@ -47,6 +47,16 @@ When the user explicitly asks to download or inspect a ZIP:
 6. Do not execute bundled scripts, installers, or binaries automatically.
 7. Summarize project type from files such as `pom.xml`, `build.gradle`, `settings.gradle`, `package.json`, `Dockerfile`, `application.properties`, `application.yml`, mapper XML, JSP, and SQL scripts.
 
+Use the bundled distribution inspector after the file is present locally:
+
+```bash
+python scripts/egovframe_distribution.py inspect --zip path/to/package.zip --expected-sha1 <portal-sha1> --json
+```
+
+The inspector reports checksum status, unsafe ZIP paths, script/binary entries, distribution type, framework signals, extension counts, largest entries, and next steps. A ZIP with unsafe paths must not be extracted. A ZIP with script or binary entries must be reviewed manually and must not be executed automatically.
+
+For exact usage rules, read `distribution-file-playbook.md`.
+
 ## Known Limitation
 
 The bundle is good at download metadata coverage. It is not a mirror of the eGovFrame binary download center, and it does not store ZIP internals. For exact internal contents, inspect the specific archive on demand.

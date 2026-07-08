@@ -35,6 +35,7 @@ REQUIRED_REFERENCE_FILES = {
     "repository-directory-atlas.md",
     "repository-directory-index.json",
     "portal-zip-inventory.md",
+    "distribution-file-playbook.md",
     "development-playbook.md",
     "example-code-catalog.md",
     "source-refresh.md",
@@ -161,6 +162,33 @@ def check_portal_zip_inventory(skill_dir: Path) -> list[Check]:
     ]
 
 
+def check_distribution_workflow(skill_dir: Path) -> Check:
+    plugin_root = skill_dir.parents[1]
+    script = plugin_root / "scripts" / "egovframe_distribution.py"
+    core_script = plugin_root / "scripts" / "egovframe_distribution_core.py"
+    playbook = (skill_dir / "references" / "distribution-file-playbook.md").read_text(encoding="utf-8")
+    required_markers = [
+        "egovframe_distribution.py inspect",
+        "checksum",
+        "ZIP-slip",
+        "temporary or sandbox",
+        "script-or-binary",
+        "curated diff",
+    ]
+    missing = [marker for marker in required_markers if marker not in playbook]
+    if not script.exists():
+        missing.append(str(script.relative_to(plugin_root)))
+    if not core_script.exists():
+        missing.append(str(core_script.relative_to(plugin_root)))
+    return Check(
+        name="distribution_file_workflow",
+        passed=not missing,
+        detail="distribution inspector and safe ZIP application workflow documented"
+        if not missing
+        else ", ".join(missing),
+    )
+
+
 def check_repositories(skill_dir: Path) -> list[Check]:
     index = as_object(load_json(skill_dir / "references" / "repository-directory-index.json"))
     manifest = as_object(load_json(skill_dir / "references" / "github-clone-manifest.json"))
@@ -210,6 +238,7 @@ def run_checks(skill_dir: Path) -> list[Check]:
     checks = [check_reference_files(skill_dir), check_examples(skill_dir)]
     checks.extend(check_portal(skill_dir))
     checks.extend(check_portal_zip_inventory(skill_dir))
+    checks.append(check_distribution_workflow(skill_dir))
     checks.extend(check_repositories(skill_dir))
     checks.append(check_openai_yaml(skill_dir))
     return checks

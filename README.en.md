@@ -67,7 +67,7 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 | `egovframe-developer` skill | A work guide that helps the agent follow eGovFrame patterns | When asking for implementation, review, migration, or compatibility checks |
 | Portal-based references | Easy-to-use notes based on official eGovFrame material | When you want the agent to avoid generic Spring-only answers |
 | Example code | Ready shapes for MVC, Boot REST, MyBatis, security, batch, and MSA work | When starting a new feature or asking for a reference implementation |
-| ZIP download coverage | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, and checksums | When checking whether a standard framework ZIP package is covered |
+| ZIP download and distribution use | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, checksums, and safe pre-extraction inspection | When applying a standard framework distribution package to a project |
 | Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
 | Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
 | CI/CD | Automated validation before public release | When publishing the plugin or cutting a release |
@@ -132,6 +132,22 @@ It currently checks for:
 - detected eGovFrame projects without explicit eGovFrame runtime dependency metadata
 
 In direct scan mode, high-confidence errors return exit code `2`; warnings return exit code `0`. In hook mode, the plugin returns structured hook JSON so the host can add context, deny supported tool calls, or continue the turn through the hook contract.
+
+## Distribution ZIP Inspection
+
+When you download a ZIP from the eGovFrame portal, inspect it before extracting it.
+
+```bash
+python scripts/egovframe_distribution.py inspect --zip path/to/package.zip --expected-sha1 <portal-sha1> --json
+```
+
+The inspector reports checksum status, ZIP-slip path risks, executable/script entries, Maven/Gradle/Spring/MyBatis/JSP/SQL signals, and the likely distribution type. For source-project ZIPs, extract into a temporary folder and apply only the needed controller, service, mapper, config, and SQL pieces.
+
+To summarize ZIP coverage in the bundled portal crawl:
+
+```bash
+python scripts/egovframe_distribution.py inventory --portal-json skills/egovframe-developer/references/portal-crawl-records.json --json
+```
 
 ## Configuration
 
@@ -201,6 +217,8 @@ README.en.md                          English README
 assets/egovframe-guardian-mascot.png  README mascot logo
 hooks/hooks.json                      Lifecycle hook configuration
 scripts/egovframe_guard.py            Scanner and hook entrypoint
+scripts/egovframe_distribution.py     Distribution ZIP inspector
+scripts/egovframe_distribution_core.py Distribution inspection logic
 skills/egovframe-developer/           Bundled eGovFrame skill and references
 tests/                                Guard and hook tests
 ```

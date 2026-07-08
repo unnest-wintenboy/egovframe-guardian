@@ -11,6 +11,7 @@ Use this process when eGovFrame updates or when a user asks for the latest stand
    - `references/portal-crawl-records.json`
    - `references/portal-manual-map.md`
    - `references/portal-zip-inventory.md`
+   - `references/distribution-file-playbook.md` when download package handling changes
 5. Run `scripts/audit_coverage.py --skill-dir .`.
 
 ## GitHub Repositories

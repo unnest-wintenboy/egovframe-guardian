@@ -38,7 +38,7 @@ jobs:
           python -m json.tool .claude-plugin/marketplace.json >/tmp/claude-marketplace.json
           python -m json.tool hooks/hooks.json >/tmp/hooks.json
           python -m json.tool config/egovframe-guardian.json >/tmp/policy.json
-          python -m py_compile scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py scripts/validate_release_package.py
+          python -m py_compile scripts/egovframe_distribution.py scripts/egovframe_distribution_core.py scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py scripts/validate_release_package.py
           uv run --with basedpyright basedpyright scripts tests
           python skills/egovframe-developer/scripts/audit_coverage.py --skill-dir skills/egovframe-developer
           uv run --with pytest pytest
