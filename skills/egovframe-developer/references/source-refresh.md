@@ -10,6 +10,7 @@ Use this process when eGovFrame updates or when a user asks for the latest stand
 4. Regenerate:
    - `references/portal-crawl-records.json`
    - `references/portal-manual-map.md`
+   - `references/portal-zip-inventory.md`
 5. Run `scripts/audit_coverage.py --skill-dir .`.
 
 ## GitHub Repositories

@@ -67,6 +67,7 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 | `egovframe-developer` skill | A work guide that helps the agent follow eGovFrame patterns | When asking for implementation, review, migration, or compatibility checks |
 | Portal-based references | Easy-to-use notes based on official eGovFrame material | When you want the agent to avoid generic Spring-only answers |
 | Example code | Ready shapes for MVC, Boot REST, MyBatis, security, batch, and MSA work | When starting a new feature or asking for a reference implementation |
+| ZIP download coverage | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, and checksums | When checking whether a standard framework ZIP package is covered |
 | Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
 | Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
 | CI/CD | Automated validation before public release | When publishing the plugin or cutting a release |

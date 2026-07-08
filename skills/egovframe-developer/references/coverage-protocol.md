@@ -5,8 +5,10 @@
 The skill bundle is considered complete only when these checks pass:
 
 - Portal crawl JSON exists and parses.
+- Portal ZIP inventory exists and records the download archive policy.
 - Portal sections include all six requested areas.
 - Portal record count is at least the captured baseline of 751.
+- Portal crawl retains at least 250 distinct `.zip` filename mentions from captured pages.
 - GitHub manifest exists and parses.
 - Repository atlas includes all captured public repositories.
 - Repository directory index includes directory counts for every repo.
@@ -28,4 +30,5 @@ Run the loop whenever updating the skill:
 
 - Some public portal boards are intentionally not fully fanned out because they have hundreds or thousands of records.
 - Binary downloads are represented by URLs and labels, not embedded files.
+- ZIP package internals are not considered covered until an individual archive is downloaded, checksum-verified, and inspected in a sandbox for that task.
 - `egovframe-msa-common-components` may show immediate checkout modifications on Windows due to upstream `.gitattributes` line-ending rules on assets.

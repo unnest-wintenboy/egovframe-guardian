@@ -15,9 +15,10 @@ Use official local evidence before relying on memory. Start from the bundled por
 2. Load `references/repository-directory-atlas.md` for directory-level summaries of all cloned official GitHub repositories.
 3. Search `references/repository-directory-index.json` when exact directory coverage is needed; it contains every tracked directory count from the 23 cloned repos.
 4. Search `references/portal-crawl-records.json` when exact page text, URLs, tables, download links, or board counts are needed.
-5. Load `references/development-playbook.md` before implementing or reviewing code.
-6. Load `references/example-code-catalog.md` before copying from `assets/examples/`.
-7. Run `scripts/audit_coverage.py` after editing this skill or when checking whether the source bundle still covers all captured manuals/repos.
+5. Load `references/portal-zip-inventory.md` when the task asks about portal ZIP attachments, checksums, release archives, or whether a download package is covered.
+6. Load `references/development-playbook.md` before implementing or reviewing code.
+7. Load `references/example-code-catalog.md` before copying from `assets/examples/`.
+8. Run `scripts/audit_coverage.py` after editing this skill or when checking whether the source bundle still covers all captured manuals/repos.
 
 ## Workflow
 
@@ -42,6 +43,7 @@ Use official local evidence before relying on memory. Start from the bundled por
 | All official repo directory summaries | `references/repository-directory-atlas.md` |
 | Exact repo directory coverage | `references/repository-directory-index.json` |
 | Exact portal page/body/table/link text | `references/portal-crawl-records.json` |
+| Portal ZIP/download package coverage | `references/portal-zip-inventory.md` |
 | Development standards and layer patterns | `references/development-playbook.md` |
 | Example code assets | `references/example-code-catalog.md` |
 | Maintenance and refresh process | `references/source-refresh.md` |

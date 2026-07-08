@@ -67,6 +67,7 @@ claude --plugin-dir .
 | `egovframe-developer` skill | 에이전트가 표준프레임워크 방식으로 일하도록 돕는 작업 설명서 | 코드 작성, 리뷰, 마이그레이션, 호환성 확인을 맡길 때 |
 | 포털 기반 reference | 공식 eGovFrame 내용을 읽기 쉽게 정리한 참고 자료 | 에이전트가 일반 Spring 방식으로만 답하지 않게 하고 싶을 때 |
 | 예제 코드 | 바로 따라 볼 수 있는 MVC, Boot REST, MyBatis, security, batch, MSA 예제 | 새 기능의 기본 모양을 잡을 때 |
+| ZIP 다운로드 대응 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum 정보를 찾는 참고 자료 | 표준프레임워크 사이트의 ZIP 배포물이 맞는지 확인할 때 |
 | hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
 | scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
 | CI/CD | 배포 전에 자동으로 도는 검증 흐름 | 플러그인을 공개하거나 release를 만들 때 |

@@ -27,12 +27,14 @@ EXPECTED_SECTIONS = {
 MIN_PORTAL_RECORDS = 751
 MIN_PORTAL_SEEDS = 60
 MIN_REPOSITORIES = 23
+MIN_DISTINCT_ZIP_NAMES = 250
 REQUIRED_REFERENCE_FILES = {
     "portal-manual-map.md",
     "portal-crawl-records.json",
     "github-clone-manifest.json",
     "repository-directory-atlas.md",
     "repository-directory-index.json",
+    "portal-zip-inventory.md",
     "development-playbook.md",
     "example-code-catalog.md",
     "source-refresh.md",
@@ -126,6 +128,39 @@ def check_portal(skill_dir: Path) -> list[Check]:
     ]
 
 
+def check_portal_zip_inventory(skill_dir: Path) -> list[Check]:
+    payload = as_object(load_json(skill_dir / "references" / "portal-crawl-records.json"))
+    records = as_list(payload["records"])
+    inventory = (skill_dir / "references" / "portal-zip-inventory.md").read_text(encoding="utf-8")
+    zip_names: set[str] = set()
+    for record in records:
+        text = "\n".join(str(value) for value in as_object(record).values())
+        for token in text.replace("[", " ").replace("]", " ").replace("(", " ").replace(")", " ").split():
+            cleaned = token.strip(".,;:\"'`")
+            if cleaned.lower().endswith(".zip"):
+                zip_names.add(cleaned)
+    policy_markers = [
+        "not as embedded binaries",
+        "Internal structure not assumed",
+        "Verify MD5, SHA1, or SHA256",
+    ]
+    missing_policy = [marker for marker in policy_markers if marker not in inventory]
+    return [
+        Check(
+            name="portal_zip_mentions",
+            passed=len(zip_names) >= MIN_DISTINCT_ZIP_NAMES,
+            detail=f"{len(zip_names)} distinct .zip filename mentions",
+        ),
+        Check(
+            name="portal_zip_inventory_policy",
+            passed=not missing_policy,
+            detail="ZIP metadata and safe inspection policy documented"
+            if not missing_policy
+            else ", ".join(missing_policy),
+        ),
+    ]
+
+
 def check_repositories(skill_dir: Path) -> list[Check]:
     index = as_object(load_json(skill_dir / "references" / "repository-directory-index.json"))
     manifest = as_object(load_json(skill_dir / "references" / "github-clone-manifest.json"))
@@ -174,6 +209,7 @@ def check_openai_yaml(skill_dir: Path) -> Check:
 def run_checks(skill_dir: Path) -> list[Check]:
     checks = [check_reference_files(skill_dir), check_examples(skill_dir)]
     checks.extend(check_portal(skill_dir))
+    checks.extend(check_portal_zip_inventory(skill_dir))
     checks.extend(check_repositories(skill_dir))
     checks.append(check_openai_yaml(skill_dir))
     return checks
