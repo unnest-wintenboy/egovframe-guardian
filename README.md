@@ -1,6 +1,10 @@
 # eGovFrame Guardian
 
 <p align="center">
+  <img src="assets/egovframe-guardian-mascot.png" alt="eGovFrame Guardian mascot" width="180">
+</p>
+
+<p align="center">
   <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml"><img alt="Release" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml/badge.svg"></a>
   <a href="https://github.com/unnest-wintenboy/egovframe-guardian/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/unnest-wintenboy/egovframe-guardian?label=release"></a>
@@ -180,6 +184,7 @@ The release workflow publishes `.zip` and `.tar.gz` archives, emits SHA-256 chec
 .codex-plugin/plugin.json             Codex plugin manifest
 .claude-plugin/plugin.json            Claude Code plugin manifest
 .claude-plugin/marketplace.json       Claude Code marketplace catalog
+assets/egovframe-guardian-mascot.png  README mascot logo
 hooks/hooks.json                      Lifecycle hook configuration
 scripts/egovframe_guard.py            Scanner and hook entrypoint
 skills/egovframe-developer/           Bundled eGovFrame skill and references
