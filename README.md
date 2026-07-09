@@ -66,6 +66,7 @@ claude --plugin-dir .
 | 포털 기반 reference | 공식 eGovFrame 내용을 읽기 쉽게 정리한 참고 자료 | 에이전트가 일반 Spring 방식으로만 답하지 않게 하고 싶을 때 |
 | 예제 코드 | 바로 따라 볼 수 있는 MVC, Boot REST, MyBatis, security, batch, MSA 예제 | 새 기능의 기본 모양을 잡을 때 |
 | ZIP 다운로드와 배포파일 사용 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum을 찾고 받은 ZIP을 풀기 전에 검사 | 표준프레임워크 사이트의 배포파일을 프로젝트에 적용할 때 |
+| loop engineering guide | 큰 작업을 작은 반복으로 나누고, 매번 증거와 검증을 남기는 운영 방식 | 구현, 리뷰, 마이그레이션, ZIP 적용이 한 번에 끝나기 어려울 때 |
 | hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
 | scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
 
@@ -91,7 +92,7 @@ eGovFrame Guardian 기준으로 Boot REST CRUD 예제를 MyBatis로 만들어줘
 이 controller/service/mapper 흐름을 현재 표준프레임워크 스타일로 정리해줘.
 ```
 
-에이전트는 이 skill을 읽고 공식 포털 요약, repo index, 예제 코드, scanner 규칙을 함께 참고합니다. 가능하면 작업 목적, 확인할 폴더, 사용 중인 eGovFrame 버전, classic MVC인지 Boot인지도 같이 알려주세요.
+에이전트는 이 skill을 읽고 공식 포털 요약, repo index, 예제 코드, scanner 규칙을 함께 참고합니다. 작업이 크면 `goal -> evidence -> plan -> act -> observe -> verdict` 흐름으로 짧게 반복하면서, 통과한 검증과 남은 문제를 기록합니다. 가능하면 작업 목적, 확인할 폴더, 사용 중인 eGovFrame 버전, classic MVC인지 Boot인지도 같이 알려주세요.
 
 ## Hook은 언제, 왜 발동되나요
 

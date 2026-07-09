@@ -17,9 +17,10 @@ Use official local evidence before relying on memory. Start from the bundled por
 4. Search `references/portal-crawl-records.json` when exact page text, URLs, tables, download links, or board counts are needed.
 5. Load `references/portal-zip-inventory.md` when the task asks about portal ZIP attachments, checksums, release archives, or whether a download package is covered.
 6. Load `references/distribution-file-playbook.md` before using a downloaded ZIP, inspecting a package, extracting a distribution, or adapting files from a portal archive.
-7. Load `references/development-playbook.md` before implementing or reviewing code.
-8. Load `references/example-code-catalog.md` before copying from `assets/examples/`.
-9. Run `scripts/audit_coverage.py` after editing this skill or when checking whether the source bundle still covers all captured manuals/repos.
+7. Load `references/loop-engineering.md` before multi-step implementation, migration, review/fix, source refresh, or distribution adoption work.
+8. Load `references/development-playbook.md` before implementing or reviewing code.
+9. Load `references/example-code-catalog.md` before copying from `assets/examples/`.
+10. Run `scripts/audit_coverage.py` after editing this skill or when checking whether the source bundle still covers all captured manuals/repos.
 
 ## Workflow
 
@@ -32,9 +33,10 @@ Use official local evidence before relying on memory. Start from the bundled por
 2. Read the smallest matching reference first. Do not load the full JSON unless exact coverage or page text is required.
 3. Inspect the target project structure before changing code. Match its build tool, package naming, XML/YAML style, mapper style, and test layout.
 4. Prefer official sample structure over invented architecture. If the target repo already diverges, preserve local conventions unless they violate the standard or the user asks for migration.
-5. Implement by layer: controller or API boundary, service/use case, persistence/mapper, config, tests, deployment notes.
-6. Verify through the project’s real surface: Maven/Gradle build, unit/integration tests, HTTP route, UI flow, batch launch, or container manifest validation as applicable.
-7. Record gaps explicitly. If a needed manual page is absent from the captured bundle, refresh sources rather than guessing.
+5. For multi-step work, run a bounded loop: goal, evidence, plan, act, observe, verdict, then repeat only while the loop budget remains.
+6. Implement by layer: controller or API boundary, service/use case, persistence/mapper, config, tests, deployment notes.
+7. Verify through the project’s real surface: Maven/Gradle build, unit/integration tests, HTTP route, UI flow, batch launch, or container manifest validation as applicable.
+8. Record gaps explicitly. If a needed manual page is absent from the captured bundle, refresh sources rather than guessing.
 
 ## Reference Routing
 
@@ -46,6 +48,7 @@ Use official local evidence before relying on memory. Start from the bundled por
 | Exact portal page/body/table/link text | `references/portal-crawl-records.json` |
 | Portal ZIP/download package coverage | `references/portal-zip-inventory.md` |
 | Safe distribution ZIP inspection and use | `references/distribution-file-playbook.md` |
+| Bounded loop engineering for agent work | `references/loop-engineering.md` |
 | Development standards and layer patterns | `references/development-playbook.md` |
 | Example code assets | `references/example-code-catalog.md` |
 | Maintenance and refresh process | `references/source-refresh.md` |

@@ -66,6 +66,7 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 | Portal-based references | Easy-to-use notes based on official eGovFrame material | When you want the agent to avoid generic Spring-only answers |
 | Example code | Ready shapes for MVC, Boot REST, MyBatis, security, batch, and MSA work | When starting a new feature or asking for a reference implementation |
 | ZIP download and distribution use | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, checksums, and safe pre-extraction inspection | When applying a standard framework distribution package to a project |
+| Loop engineering guide | A way to split larger work into bounded iterations with evidence and verification each time | When implementation, review, migration, or ZIP adoption cannot be done safely in one pass |
 | Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
 | Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
 
@@ -91,7 +92,7 @@ Use eGovFrame Guardian to check whether this project follows eGovFrame transacti
 Use eGovFrame Guardian to migrate this controller/service/mapper flow toward the current standard.
 ```
 
-The agent reads the bundled skill and uses the portal notes, repo indexes, example code, and scanner rules together. For best results, include the goal, target folder, eGovFrame version, and whether the project is classic MVC or Boot.
+The agent reads the bundled skill and uses the portal notes, repo indexes, example code, and scanner rules together. For larger work, it follows a short `goal -> evidence -> plan -> act -> observe -> verdict` loop and records passed checks plus remaining gaps. For best results, include the goal, target folder, eGovFrame version, and whether the project is classic MVC or Boot.
 
 ## When And Why Hooks Run
 

@@ -36,6 +36,7 @@ REQUIRED_REFERENCE_FILES = {
     "repository-directory-index.json",
     "portal-zip-inventory.md",
     "distribution-file-playbook.md",
+    "loop-engineering.md",
     "development-playbook.md",
     "example-code-catalog.md",
     "source-refresh.md",
@@ -189,6 +190,24 @@ def check_distribution_workflow(skill_dir: Path) -> Check:
     )
 
 
+def check_loop_engineering(skill_dir: Path) -> Check:
+    playbook = (skill_dir / "references" / "loop-engineering.md").read_text(encoding="utf-8")
+    required_markers = [
+        "goal -> evidence -> plan -> act -> observe -> verdict",
+        "Default maximum: 3 cycles",
+        "Distribution ZIP Adoption Loop",
+        "Maker And Checker Split",
+        "Do not add surprise full-project scans",
+        "Completion Contract",
+    ]
+    missing = [marker for marker in required_markers if marker not in playbook]
+    return Check(
+        name="loop_engineering_policy",
+        passed=not missing,
+        detail="bounded loop engineering policy documented" if not missing else ", ".join(missing),
+    )
+
+
 def check_repositories(skill_dir: Path) -> list[Check]:
     index = as_object(load_json(skill_dir / "references" / "repository-directory-index.json"))
     manifest = as_object(load_json(skill_dir / "references" / "github-clone-manifest.json"))
@@ -239,6 +258,7 @@ def run_checks(skill_dir: Path) -> list[Check]:
     checks.extend(check_portal(skill_dir))
     checks.extend(check_portal_zip_inventory(skill_dir))
     checks.append(check_distribution_workflow(skill_dir))
+    checks.append(check_loop_engineering(skill_dir))
     checks.extend(check_repositories(skill_dir))
     checks.append(check_openai_yaml(skill_dir))
     return checks

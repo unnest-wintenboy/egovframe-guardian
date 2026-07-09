@@ -1,6 +1,6 @@
 # eGovFrame Guardian Hook Rules
 
-The plugin hooks add portal-aligned context, guard critical operations, scan after edits, restore context after compaction, and check tracked findings before Codex or a subagent stops.
+The plugin hooks add portal-aligned context, guard critical operations, scan after edits, restore context after compaction, and check tracked findings before Codex or a subagent stops. They implement the loop engineering controls documented in `skills/egovframe-developer/references/loop-engineering.md`.
 
 - `UserPromptSubmit`: injects eGovFrame standard-development context for matching prompts.
 - `PreToolUse`: denies destructive shell commands touching eGovFrame or plugin-critical paths unless explicitly confirmed with `egovframe-guardian:allow-destructive`.
@@ -10,6 +10,8 @@ The plugin hooks add portal-aligned context, guard critical operations, scan aft
 - `SubagentStop`: blocks subagent completion only when tracked findings for the current project remain.
 - `PostCompact`: reminds Codex to reload eGovFrame context after compaction.
 - `Stop`: asks Codex to continue once when tracked blocking findings or unscanned work remain for the current project.
+
+Loop shape: `goal -> evidence -> plan -> act -> observe -> verdict`. Hooks should support this bounded loop; they should not create unbounded retries or surprise full-project scans.
 
 Prompt/subagent context follows the portal surface: introduction/architecture, development guide, downloads, developer participation, technical support, compatibility confirmation, and current v5.0.0 highlights such as VS Code Extension, AI RAG examples, Istio/OpenTelemetry operating guides, and Flutter device APIs.
 

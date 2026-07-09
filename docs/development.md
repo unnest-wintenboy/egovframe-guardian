@@ -60,6 +60,23 @@ The hook policy follows the same practical shape as mature Codex/LazyCodex plugi
 
 This keeps guardrails strong after real edits while avoiding noisy end-of-turn blocking for unrelated discussion or read-only exploration.
 
+## Loop Engineering Notes
+
+The bundled skill treats loop engineering as a bounded control system, not as open-ended autonomy. The canonical loop is documented in `skills/egovframe-developer/references/loop-engineering.md`:
+
+```text
+goal -> evidence -> plan -> act -> observe -> verdict
+```
+
+Design intent:
+
+- The skill decides when a loop is warranted: implementation, migration, review/fix, source refresh, and distribution ZIP adoption.
+- Hooks provide brakes and observations: `PreToolUse`/`PermissionRequest` stop unsafe actions, `PostToolUse` observes edits with the scanner, and `Stop`/`SubagentStop` gate only tracked current-project findings.
+- The loop has explicit budgets: default 3 cycles, larger migrations up to 5, and repeated failures stop with a named failure label.
+- Maker/checker separation is preferred for larger work; when one agent performs both, the final response must name evidence, actions, verification, and remaining gaps.
+
+Do not convert simple read-only answers into loops. Do not add infinite retries, background autonomous mutation, or final-turn surprise rescans.
+
 ## Repository Map
 
 ```text
@@ -75,5 +92,6 @@ scripts/egovframe_guard.py             Scanner and hook entrypoint
 scripts/egovframe_distribution.py      Distribution ZIP inspector
 scripts/egovframe_distribution_core.py Distribution inspection logic
 skills/egovframe-developer/            Bundled eGovFrame skill and references
+skills/egovframe-developer/references/loop-engineering.md Bounded agent loop design
 tests/                                 Guard and hook tests
 ```
