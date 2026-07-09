@@ -5,8 +5,8 @@
   <text x="120" y="188" fill="#C9D1D9" font-family="Consolas, monospace" font-size="24">inspected 257 files, errors=0, warnings=10</text>
   <text x="120" y="252" fill="#FFA657" font-family="Consolas, monospace" font-size="22">WARNING service-transaction ... explicit transaction boundary</text>
   <text x="120" y="304" fill="#FFA657" font-family="Consolas, monospace" font-size="22">WARNING mapper-scan ... mapper-locations or @MapperScan</text>
-  <text x="120" y="388" fill="#7EE787" font-family="Consolas, monospace" font-size="24">Release maturity: 110 / 110</text>
-  <text x="120" y="452" fill="#C9D1D9" font-family="Consolas, monospace" font-size="22">skill validation, coverage audit, pytest, and CI checks passing</text>
+  <text x="120" y="388" fill="#7EE787" font-family="Consolas, monospace" font-size="24">Guard maturity: 130 / 130</text>
+  <text x="120" y="452" fill="#C9D1D9" font-family="Consolas, monospace" font-size="22">skill validation, coverage audit, and tests passing</text>
   <rect x="120" y="516" width="260" height="54" rx="8" fill="#238636"/>
   <text x="154" y="551" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="22" font-weight="700">Ready for beta</text>
 </svg>

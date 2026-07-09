@@ -37,6 +37,16 @@ def text_value(payload: dict[str, JsonValue], key: str) -> str:
     return value if isinstance(value, str) else ""
 
 
+def payload_text(payload: JsonValue) -> str:
+    if isinstance(payload, dict):
+        return " ".join(payload_text(value) for value in payload.values())
+    if isinstance(payload, list):
+        return " ".join(payload_text(value) for value in payload)
+    if isinstance(payload, (str, int, float, bool)):
+        return str(payload)
+    return ""
+
+
 def bool_value(payload: dict[str, JsonValue], key: str) -> bool:
     value = payload.get(key)
     return value if isinstance(value, bool) else False
@@ -145,7 +155,9 @@ def post_compact_payload() -> dict[str, JsonValue]:
     return {"continue": True, "systemMessage": COMPACT_CONTEXT}
 
 
-def subagent_start_payload(payload: JsonValue) -> dict[str, JsonValue]:
+def subagent_start_payload(payload: JsonValue) -> dict[str, JsonValue] | None:
+    if not contains_marker(payload_text(payload), PROMPT_MARKERS):
+        return None
     agent_type = text_value(payload_object(payload), "agent_type")
     context = f"{SUBAGENT_CONTEXT} Agent type: {agent_type or 'unknown'}."
     return {"hookSpecificOutput": {"hookEventName": "SubagentStart", "additionalContext": context}}
@@ -167,8 +179,8 @@ def post_tool_payload(policy: Policy, root: Path) -> dict[str, JsonValue]:
     }
 
 
-def tracked_gate_payload(payload: JsonValue, actor: str) -> dict[str, JsonValue] | None:
-    snapshots = gate_snapshots()
+def tracked_gate_payload(root: Path, payload: JsonValue, actor: str) -> dict[str, JsonValue] | None:
+    snapshots = gate_snapshots(root)
     if not snapshots:
         return None
     details = "\n".join(f"- {item.root}: {item.summary}" for item in snapshots)
@@ -181,39 +193,15 @@ def tracked_gate_payload(payload: JsonValue, actor: str) -> dict[str, JsonValue]
     return {"decision": "block", "reason": reason}
 
 
-def stop_payload(policy: Policy, root: Path, payload: JsonValue) -> dict[str, JsonValue]:
-    tracked = tracked_gate_payload(payload, "main-agent")
+def stop_payload(_policy: Policy, root: Path, payload: JsonValue) -> dict[str, JsonValue]:
+    tracked = tracked_gate_payload(root, payload, "main-agent")
     if tracked is not None:
         return tracked
-    result = scan(root, policy)
-    if not result.detected:
-        return {"continue": True}
-    report = render_report(result)
-    if result.error_count > 0:
-        if bool_value(payload_object(payload), "stop_hook_active"):
-            return {
-                "continue": True,
-                "systemMessage": f"eGovFrame Guardian final gate still has blocking findings after one continuation.\n{report}",
-            }
-        reason = (
-            "eGovFrame guard found blocking standard violations. Fix them or add documented "
-            f"project policy suppressions, then rerun the scanner before the final response.\n{report}"
-        )
-        return {"decision": "block", "reason": reason}
-    if result.warning_count > 0:
-        return {"continue": True, "systemMessage": f"eGovFrame Guardian final gate warnings.\n{report}"}
     return {"continue": True}
 
 
-def subagent_stop_payload(policy: Policy, root: Path, payload: JsonValue) -> dict[str, JsonValue]:
-    tracked = tracked_gate_payload(payload, "subagent")
+def subagent_stop_payload(_policy: Policy, root: Path, payload: JsonValue) -> dict[str, JsonValue]:
+    tracked = tracked_gate_payload(root, payload, "subagent")
     if tracked is not None:
         return tracked
-    result = scan(root, policy)
-    if result.error_count == 0:
-        return {"continue": True}
-    report = render_report(result)
-    if bool_value(payload_object(payload), "stop_hook_active"):
-        return {"continue": True, "systemMessage": f"eGovFrame Guardian subagent gate still has findings.\n{report}"}
-    reason = f"Subagent must resolve eGovFrame guard findings before stopping.\n{report}"
-    return {"decision": "block", "reason": reason}
+    return {"continue": True}

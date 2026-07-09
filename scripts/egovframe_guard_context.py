@@ -4,17 +4,10 @@ from typing import Final
 
 CONFIRM_TOKEN: Final = "egovframe-guardian:allow-destructive"
 PROMPT_MARKERS: Final = (
-    "ai rag",
-    "compatibility",
     "egovframe",
     "egovframework",
-    "flutter",
-    "istio",
-    "mapper",
-    "mybatis",
-    "opentelemetry",
-    "runtime",
-    "vscode",
+    "e-government framework",
+    "org.egovframe",
     "\uac1c\ubc1c\uac00\uc774\ub4dc",
     "\uac1c\ubc1c\ud658\uacbd",
     "\uacf5\ud1b5\ucef4\ud3ec\ub10c\ud2b8",
@@ -35,20 +28,14 @@ DESTRUCTIVE_MARKERS: Final = (
 )
 EGOV_CRITICAL_MARKERS: Final = (
     ".egovframe-guardian.json",
-    "application.properties",
-    "application.yml",
-    "build.gradle",
-    "dockerfile",
     "egovframework",
-    "gatewayserver",
-    "k8s",
-    "mapper",
     "org.egovframe",
     "org/egovframe",
-    "pom.xml",
-    "settings.gradle",
-    "src/main/java",
-    "src/main/resources",
+    "org\\egovframe",
+    "src/main/java/egovframework",
+    "src\\main\\java\\egovframework",
+    "src/main/resources/egovframework",
+    "src\\main\\resources\\egovframework",
 )
 PLUGIN_CRITICAL_MARKERS: Final = (
     ".codex-plugin/plugin.json",

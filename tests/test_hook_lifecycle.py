@@ -74,6 +74,11 @@ def test_pre_tool_payload_adds_context_for_critical_non_destructive_change() -> 
     assert "additionalContext" in hook_output
 
 
+def test_pre_tool_payload_allows_generic_java_delete_path() -> None:
+    response = pre_tool_payload(tool_payload("rm -rf src/main/java/com/example/tmp"))
+    assert response is None
+
+
 def test_pre_tool_payload_allows_confirmed_destructive_command() -> None:
     command = "rm -rf src/main/java/egovframework # egovframe-guardian:allow-destructive"
     assert pre_tool_payload(tool_payload(command)) is None
@@ -87,6 +92,11 @@ def test_prompt_payload_directly_matches_egov_terms() -> None:
     assert hook_output["hookEventName"] == "UserPromptSubmit"
 
 
+def test_prompt_payload_stays_quiet_for_generic_compatibility() -> None:
+    response = prompt_payload({"prompt": "check React browser compatibility and mapper utility tests"})
+    assert response is None
+
+
 def test_post_tool_payload_blocks_bad_project_directly(tmp_path: Path) -> None:
     make_bad_project(tmp_path)
     response = post_tool_payload(load_policy(PLUGIN_ROOT, tmp_path), tmp_path)
@@ -94,11 +104,10 @@ def test_post_tool_payload_blocks_bad_project_directly(tmp_path: Path) -> None:
     assert "blocking standard violations" in str(response["stopReason"])
 
 
-def test_stop_payload_blocks_bad_project_directly(tmp_path: Path) -> None:
+def test_stop_payload_stays_quiet_without_tracked_work(tmp_path: Path) -> None:
     make_bad_project(tmp_path)
     response = stop_payload(load_policy(PLUGIN_ROOT, tmp_path), tmp_path, {"stop_hook_active": False})
-    assert response["decision"] == "block"
-    assert "blocking standard violations" in str(response["reason"])
+    assert response["continue"] is True
 
 
 def test_prompt_hook_adds_context_for_egovframe_work() -> None:
@@ -146,7 +155,7 @@ def test_pre_tool_hook_denies_destructive_egovframe_shell_command() -> None:
     assert "destructive" in str(hook_output["permissionDecisionReason"])
 
 
-def test_stop_hook_blocks_final_response_until_blocking_findings_are_handled(tmp_path: Path) -> None:
+def test_stop_hook_stays_quiet_without_tracked_work(tmp_path: Path) -> None:
     make_bad_project(tmp_path)
     result = subprocess.run(
         [sys.executable, str(GUARD), "--mode", "stop"],
@@ -157,11 +166,10 @@ def test_stop_hook_blocks_final_response_until_blocking_findings_are_handled(tmp
     )
     payload = load_json_object(result.stdout)
     assert result.returncode == 0
-    assert payload["decision"] == "block"
-    assert "eGovFrame guard found blocking" in str(payload["reason"])
+    assert payload["continue"] is True
 
 
-def test_stop_hook_does_not_loop_when_already_active(tmp_path: Path) -> None:
+def test_stop_hook_stays_quiet_when_already_active_without_tracked_work(tmp_path: Path) -> None:
     make_bad_project(tmp_path)
     result = subprocess.run(
         [sys.executable, str(GUARD), "--mode", "stop"],
@@ -173,7 +181,6 @@ def test_stop_hook_does_not_loop_when_already_active(tmp_path: Path) -> None:
     payload = load_json_object(result.stdout)
     assert result.returncode == 0
     assert payload["continue"] is True
-    assert "still has blocking" in str(payload["systemMessage"])
 
 
 def test_post_compact_hook_restores_guard_context() -> None:

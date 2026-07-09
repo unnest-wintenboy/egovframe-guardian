@@ -9,8 +9,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml"><img alt="Release" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml/badge.svg"></a>
   <a href="https://github.com/unnest-wintenboy/egovframe-guardian/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/unnest-wintenboy/egovframe-guardian?label=release"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
   <img alt="Codex plugin" src="https://img.shields.io/badge/Codex-plugin-0f172a">
@@ -20,7 +18,7 @@
 <p align="center">
   <strong>A gentle guardrail kit for agents working on Korean eGovFrame projects.</strong>
   <br>
-  Build, review, scan, and ship eGovFrame-aligned code from Codex or Claude Code.
+  Build, review, and scan eGovFrame-aligned code from Codex or Claude Code.
 </p>
 
 eGovFrame Guardian gives coding agents the context they usually miss: official eGovFrame portal notes, GitHub repository indexes, practical Java examples, and local hooks that catch common framework drift before it turns into review pain.
@@ -29,9 +27,9 @@ Use it when the work touches classic MVC, eGovFrame Boot, MyBatis, Spring Securi
 
 ## Why This Exists
 
-eGovFrame projects often fail in the quiet places: mapper namespaces, transaction boundaries, runtime metadata, SQL leaking into controllers, and examples copied from the wrong generation of the framework. This plugin keeps those details close to the agent while it edits, reviews, and prepares releases.
+eGovFrame projects often fail in the quiet places: mapper namespaces, transaction boundaries, runtime metadata, SQL leaking into controllers, and examples copied from the wrong generation of the framework. This plugin keeps those details close to the agent while it edits, reviews, and maintains the project.
 
-It is intentionally boring where boring is good: data-driven rules, reproducible validation, CI gates, signed release checksums, and source attribution back to the official eGovFrame portal and organization.
+It is intentionally boring where boring is good: data-driven rules, reproducible checks, and source attribution back to the official eGovFrame portal and organization.
 
 ## Quick Start
 
@@ -70,7 +68,6 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 | ZIP download and distribution use | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, checksums, and safe pre-extraction inspection | When applying a standard framework distribution package to a project |
 | Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
 | Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
-| CI/CD | Automated validation before public release | When publishing the plugin or cutting a release |
 
 ## How To Use The Skill
 
@@ -103,14 +100,14 @@ Hooks are not commands you run by hand. Codex or Claude Code calls them automati
 | When it runs | Why it exists | What happens |
 | --- | --- | --- |
 | Session start `SessionStart` | The agent should know the plugin is active right away | It announces that the eGovFrame skill and guardrails are ready |
-| Prompt submit `UserPromptSubmit` | Prompts that mention eGovFrame, MyBatis, runtime, or compatibility need framework context | It adds portal-aligned context so the answer does not drift into generic Spring guidance |
+| Prompt submit `UserPromptSubmit` | Prompts that mention eGovFrame, egovframework, or the Korean standard framework need framework context | It adds portal-aligned context so the answer does not drift into generic Spring guidance |
 | Before a tool call `PreToolUse` | Delete, move, and overwrite commands can be hard to recover from | It blocks destructive commands against eGovFrame or plugin-critical paths |
 | Permission request `PermissionRequest` | Risky commands should be filtered before approval | It denies destructive approval requests for protected paths |
 | After edits or writes `PostToolUse` | Problems are cheapest to fix right after code changes | It runs the scanner for controller SQL, mapper, transaction, secret, and metadata issues |
-| Subagent start `SubagentStart` | Other agents need the same standard | It gives subagents the same eGovFrame context |
-| Subagent stop `SubagentStop` | Findings should not be left behind quietly | It prevents subagents from finishing while tracked findings remain |
+| Subagent start `SubagentStart` | Other agents working on eGovFrame need the same standard | It adds context only when the subagent request includes eGovFrame signals |
+| Subagent stop `SubagentStop` | Already-found issues should not be left behind quietly | It blocks only when tracked blocking findings remain for the current project |
 | After compaction `PostCompact` | Long conversations can lose important context after compaction | It restores the eGovFrame guard context |
-| Before turn end `Stop` | Blocking findings deserve one final check | It asks the agent to continue once when unresolved findings remain |
+| Before turn end `Stop` | Previously tracked blocking findings deserve one final check | It asks the agent to continue only when recorded findings remain unresolved for the current project |
 
 If a destructive shell command is truly needed, the command must include `egovframe-guardian:allow-destructive`. That token is an intentional confirmation step, not a normal everyday option.
 
@@ -165,63 +162,9 @@ Projects can override noisy rules with:
 
 Rule severities and suppressions are data-driven, so teams can tune findings without editing scanner code.
 
-## Validate Locally
+## Maintainer Notes
 
-```bash
-python -m json.tool .codex-plugin/plugin.json
-python -m json.tool .claude-plugin/plugin.json
-python -m json.tool .agents/plugins/marketplace.json
-python -m json.tool .claude-plugin/marketplace.json
-python scripts/validate_release_package.py .
-python scripts/score_maturity.py . --fail-under 130
-uv run --with basedpyright basedpyright scripts tests
-uv run --with ruff ruff check .
-uv run --with pytest pytest
-uv run --with pytest --with pytest-cov pytest --cov=egovframe_guard_core --cov=egovframe_guard_hooks --cov=egovframe_guard_state --cov-report=term-missing --cov-fail-under=80
-```
-
-If Claude Code is installed:
-
-```bash
-claude plugin validate .
-```
-
-If Codex plugin creator tooling is installed:
-
-```bash
-python ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
-```
-
-## Release Flow
-
-Pull requests and pushes run JSON validation, Python compile checks, strict `basedpyright`, bundled skill validation, reference coverage audit, pytest, coverage, maturity scoring, and public release metadata validation.
-
-Tag releases with semantic version tags:
-
-```bash
-git tag vX.Y.Z
-git push origin vX.Y.Z
-```
-
-The release workflow publishes `.zip` and `.tar.gz` archives, emits SHA-256 checksums, and creates a GitHub Release.
-
-## Repository Map
-
-```text
-README.md                             Korean default README
-README.en.md                          English README
-.agents/plugins/marketplace.json      Codex marketplace catalog
-.codex-plugin/plugin.json             Codex plugin manifest
-.claude-plugin/plugin.json            Claude Code plugin manifest
-.claude-plugin/marketplace.json       Claude Code marketplace catalog
-assets/egovframe-guardian-mascot-retro.png README mascot logo
-hooks/hooks.json                      Lifecycle hook configuration
-scripts/egovframe_guard.py            Scanner and hook entrypoint
-scripts/egovframe_distribution.py     Distribution ZIP inspector
-scripts/egovframe_distribution_core.py Distribution inspection logic
-skills/egovframe-developer/           Bundled eGovFrame skill and references
-tests/                                Guard and hook tests
-```
+If you are modifying or publishing the plugin, see [development notes](docs/development.md). Most users only need the install and usage sections above.
 
 ## Source Attribution
 
@@ -235,10 +178,6 @@ Bundled crawl records and repository atlases are for development guidance. Origi
 ## License
 
 The code, documentation, and generated mascot asset in this repository are distributed under the [MIT License](LICENSE). Upstream eGovFrame materials referenced or summarized by this plugin remain under their own source terms.
-
-## Current Publishing Notes
-
-This repository publishes a public self-hosted Codex marketplace catalog because official Codex Plugin Directory self-serve publishing is not generally available yet. Claude Code community marketplace submission still requires Anthropic review after local validation.
 
 ## Limitations
 

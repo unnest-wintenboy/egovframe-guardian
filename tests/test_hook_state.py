@@ -69,18 +69,40 @@ def restore_plugin_data(previous: str | None) -> None:
         os.environ["PLUGIN_DATA"] = previous
 
 
+def hook_matcher(hooks: dict[str, JsonValue], event: str) -> str:
+    raw_entries = hooks[event]
+    assert isinstance(raw_entries, list)
+    first = raw_entries[0]
+    assert isinstance(first, dict)
+    matcher = first.get("matcher")
+    assert isinstance(matcher, str)
+    return matcher
+
+
 def test_stop_gate_uses_tracked_blocking_scan_from_plugin_data(tmp_path: Path) -> None:
+    previous = set_plugin_data(tmp_path / "plugin-data")
+    project = tmp_path / "bad-project"
+    try:
+        make_bad_project(project)
+        response = post_tool_payload(load_policy(PLUGIN_ROOT, project), project)
+        assert response["continue"] is False
+        stop_response = stop_payload(load_policy(PLUGIN_ROOT, project), project, {"stop_hook_active": False})
+        assert stop_response["decision"] == "block"
+        assert str(project) in str(stop_response["reason"])
+    finally:
+        restore_plugin_data(previous)
+
+
+def test_stop_gate_ignores_unrelated_tracked_scan_from_plugin_data(tmp_path: Path) -> None:
     previous = set_plugin_data(tmp_path / "plugin-data")
     project = tmp_path / "bad-project"
     clean = tmp_path / "clean"
     try:
         clean.mkdir()
         make_bad_project(project)
-        response = post_tool_payload(load_policy(PLUGIN_ROOT, project), project)
-        assert response["continue"] is False
+        _ = post_tool_payload(load_policy(PLUGIN_ROOT, project), project)
         stop_response = stop_payload(load_policy(PLUGIN_ROOT, clean), clean, {"stop_hook_active": False})
-        assert stop_response["decision"] == "block"
-        assert str(project) in str(stop_response["reason"])
+        assert stop_response["continue"] is True
     finally:
         restore_plugin_data(previous)
 
@@ -97,7 +119,13 @@ def test_permission_request_denies_destructive_critical_command() -> None:
 
 
 def test_subagent_start_adds_homepage_aligned_context() -> None:
-    response = subagent_start_payload({"agent_type": "lazycodex-code-reviewer"})
+    response = subagent_start_payload(
+        {
+            "agent_type": "lazycodex-code-reviewer",
+            "prompt": "Review this eGovFrame mapper and compatibility flow.",
+        }
+    )
+    assert response is not None
     hook_output = response["hookSpecificOutput"]
     assert isinstance(hook_output, dict)
     assert hook_output["hookEventName"] == "SubagentStart"
@@ -105,7 +133,44 @@ def test_subagent_start_adds_homepage_aligned_context() -> None:
     assert "compatibility" in str(hook_output["additionalContext"])
 
 
+def test_subagent_start_stays_quiet_for_unrelated_context() -> None:
+    response = subagent_start_payload({"agent_type": "lazycodex-code-reviewer", "prompt": "Review a README typo."})
+    assert response is None
+
+
+def test_subagent_start_stays_quiet_for_generic_compatibility_context() -> None:
+    response = subagent_start_payload(
+        {"agent_type": "lazycodex-code-reviewer", "prompt": "Review React browser compatibility fixes."}
+    )
+    assert response is None
+
+
+def test_subagent_start_cli_stays_quiet_for_unrelated_context() -> None:
+    result = subprocess.run(
+        [sys.executable, str(GUARD), "--mode", "subagent-start"],
+        input=json.dumps({"agent_type": "lazycodex-code-reviewer", "prompt": "Review a README typo."}),
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0
+    assert result.stdout == ""
+
+
 def test_subagent_stop_blocks_when_tracked_scan_is_blocking(tmp_path: Path) -> None:
+    previous = set_plugin_data(tmp_path / "plugin-data")
+    project = tmp_path / "bad-project"
+    try:
+        make_bad_project(project)
+        _ = post_tool_payload(load_policy(PLUGIN_ROOT, project), project)
+        response = subagent_stop_payload(load_policy(PLUGIN_ROOT, project), project, {"stop_hook_active": False})
+        assert response["decision"] == "block"
+        assert "subagent" in str(response["reason"])
+    finally:
+        restore_plugin_data(previous)
+
+
+def test_subagent_stop_ignores_unrelated_tracked_scan(tmp_path: Path) -> None:
     previous = set_plugin_data(tmp_path / "plugin-data")
     project = tmp_path / "bad-project"
     other = tmp_path / "other"
@@ -114,10 +179,16 @@ def test_subagent_stop_blocks_when_tracked_scan_is_blocking(tmp_path: Path) -> N
         make_bad_project(project)
         _ = post_tool_payload(load_policy(PLUGIN_ROOT, project), project)
         response = subagent_stop_payload(load_policy(PLUGIN_ROOT, other), other, {"stop_hook_active": False})
-        assert response["decision"] == "block"
-        assert "subagent" in str(response["reason"])
+        assert response["continue"] is True
     finally:
         restore_plugin_data(previous)
+
+
+def test_subagent_stop_stays_quiet_without_tracked_findings(tmp_path: Path) -> None:
+    clean = tmp_path / "clean"
+    clean.mkdir()
+    response = subagent_stop_payload(load_policy(PLUGIN_ROOT, clean), clean, {"stop_hook_active": False})
+    assert response["continue"] is True
 
 
 def test_permission_hook_cli_returns_deny_json() -> None:
@@ -133,3 +204,20 @@ def test_permission_hook_cli_returns_deny_json() -> None:
     assert isinstance(hook_output, dict)
     assert result.returncode == 0
     assert hook_output["hookEventName"] == "PermissionRequest"
+
+
+def test_hook_matchers_cover_codex_and_claude_tool_names() -> None:
+    hooks_file = PLUGIN_ROOT / "hooks" / "hooks.json"
+    loaded: JsonValue = json.loads(hooks_file.read_text(encoding="utf-8"))
+    assert isinstance(loaded, dict)
+    hooks = loaded["hooks"]
+    assert isinstance(hooks, dict)
+    pre_matcher = hook_matcher(hooks, "PreToolUse")
+    permission_matcher = hook_matcher(hooks, "PermissionRequest")
+    post_matcher = hook_matcher(hooks, "PostToolUse")
+    for matcher in (pre_matcher, permission_matcher):
+        assert "exec_command" in matcher
+        assert "mcp__git_bash" in matcher
+        assert "MultiEdit" in matcher
+    assert "MultiEdit" in post_matcher
+    assert "NotebookEdit" in post_matcher

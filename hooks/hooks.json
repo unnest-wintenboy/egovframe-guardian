@@ -27,7 +27,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Bash|apply_patch|Edit|Write",
+        "matcher": "Bash|Shell|exec_command|mcp__git_bash\\.run|apply_patch|Edit|MultiEdit|Write|NotebookEdit",
         "hooks": [
           {
             "type": "command",
@@ -40,7 +40,7 @@
     ],
     "PermissionRequest": [
       {
-        "matcher": "Bash|apply_patch|Edit|Write",
+        "matcher": "Bash|Shell|exec_command|mcp__git_bash\\.run|apply_patch|Edit|MultiEdit|Write|NotebookEdit",
         "hooks": [
           {
             "type": "command",
@@ -53,7 +53,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|apply_patch",
+        "matcher": "Edit|MultiEdit|Write|NotebookEdit|apply_patch",
         "hooks": [
           {
             "type": "command",

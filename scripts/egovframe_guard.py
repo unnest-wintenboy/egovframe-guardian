@@ -109,7 +109,9 @@ def main(argv: list[str]) -> int:
         emit_json(stop_payload(policy, root, payload))
         return 0
     if args.mode == "subagent-start":
-        emit_json(subagent_start_payload(payload))
+        response = subagent_start_payload(payload)
+        if response is not None:
+            emit_json(response)
         return 0
     if args.mode == "subagent-stop":
         emit_json(subagent_stop_payload(policy, root, payload))

@@ -115,5 +115,22 @@ def record_pending(root: Path, summary: str) -> None:
     save_state(upsert_snapshot(load_state(), snapshot))
 
 
-def gate_snapshots() -> tuple[ProjectSnapshot, ...]:
-    return tuple(item for item in load_state().projects if item.pending or item.error_count > 0)
+def paths_are_related(left: Path, right: Path) -> bool:
+    try:
+        resolved_left = left.resolve()
+        resolved_right = right.resolve()
+    except OSError:
+        resolved_left = left.absolute()
+        resolved_right = right.absolute()
+    return (
+        resolved_left == resolved_right
+        or resolved_left in resolved_right.parents
+        or resolved_right in resolved_left.parents
+    )
+
+
+def gate_snapshots(root: Path | None = None) -> tuple[ProjectSnapshot, ...]:
+    snapshots = tuple(item for item in load_state().projects if item.pending or item.error_count > 0)
+    if root is None:
+        return snapshots
+    return tuple(item for item in snapshots if paths_are_related(Path(item.root), root))

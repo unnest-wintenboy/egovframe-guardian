@@ -9,8 +9,6 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml"><img alt="Release" src="https://github.com/unnest-wintenboy/egovframe-guardian/actions/workflows/release.yml/badge.svg"></a>
   <a href="https://github.com/unnest-wintenboy/egovframe-guardian/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/unnest-wintenboy/egovframe-guardian?label=release"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green.svg"></a>
   <img alt="Codex plugin" src="https://img.shields.io/badge/Codex-plugin-0f172a">
@@ -20,7 +18,7 @@
 <p align="center">
   <strong>한국 전자정부 표준프레임워크 프로젝트를 위한 다정한 에이전트 가드레일 키트.</strong>
   <br>
-  Codex와 Claude Code에서 eGovFrame 기준에 맞게 만들고, 검토하고, 스캔하고, 배포합니다.
+  Codex와 Claude Code에서 eGovFrame 기준에 맞게 만들고, 검토하고, 스캔합니다.
 </p>
 
 eGovFrame Guardian은 코딩 에이전트가 자주 놓치는 맥락을 가까이에 둡니다. 공식 eGovFrame 포털 요약, GitHub 저장소 인덱스, 바로 참고할 수 있는 Java 예제, 그리고 프레임워크 관례에서 벗어난 부분을 조기에 잡아주는 로컬 hook을 함께 제공합니다.
@@ -29,9 +27,9 @@ classic MVC, eGovFrame Boot, MyBatis, Spring Security, batch, MSA, 호환성 확
 
 ## 왜 만들었나요
 
-eGovFrame 프로젝트는 조용한 부분에서 자주 흔들립니다. mapper namespace, transaction boundary, runtime metadata, controller 안으로 새어 들어온 SQL, 현재 표준과 맞지 않는 예제 복붙 같은 문제들입니다. 이 플러그인은 에이전트가 코드를 수정하고 검토하고 릴리즈를 준비하는 동안 그런 세부 기준을 계속 곁에 둡니다.
+eGovFrame 프로젝트는 조용한 부분에서 자주 흔들립니다. mapper namespace, transaction boundary, runtime metadata, controller 안으로 새어 들어온 SQL, 현재 표준과 맞지 않는 예제 복붙 같은 문제들입니다. 이 플러그인은 에이전트가 코드를 수정하고 검토하고 유지보수하는 동안 그런 세부 기준을 계속 곁에 둡니다.
 
-좋은 의미로 지루하게 만들었습니다. 데이터 기반 규칙, 재현 가능한 검증, CI gate, 릴리즈 checksum, 공식 eGovFrame 포털과 GitHub 조직으로 이어지는 출처를 기본으로 둡니다.
+좋은 의미로 지루하게 만들었습니다. 데이터 기반 규칙, 재현 가능한 검사, 공식 eGovFrame 포털과 GitHub 조직으로 이어지는 출처를 기본으로 둡니다.
 
 ## 빠른 시작
 
@@ -70,7 +68,6 @@ claude --plugin-dir .
 | ZIP 다운로드와 배포파일 사용 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum을 찾고 받은 ZIP을 풀기 전에 검사 | 표준프레임워크 사이트의 배포파일을 프로젝트에 적용할 때 |
 | hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
 | scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
-| CI/CD | 배포 전에 자동으로 도는 검증 흐름 | 플러그인을 공개하거나 release를 만들 때 |
 
 ## Skill은 이렇게 씁니다
 
@@ -103,14 +100,14 @@ Hook은 사용자가 직접 실행하는 명령이 아닙니다. Codex나 Claude
 | 언제 발동되나요 | 왜 필요한가요 | 무슨 일이 일어나나요 |
 | --- | --- | --- |
 | 세션이 시작될 때 `SessionStart` | 플러그인이 켜져 있다는 사실을 에이전트가 바로 알아야 합니다 | eGovFrame skill과 guardrail이 준비됐다고 알려줍니다 |
-| 프롬프트를 보낼 때 `UserPromptSubmit` | 사용자가 eGovFrame, MyBatis, runtime, compatibility 같은 말을 하면 표준프레임워크 맥락이 필요합니다 | 공식 포털 기반 맥락을 프롬프트에 더해 일반 Spring 답변으로 흐르지 않게 합니다 |
+| 프롬프트를 보낼 때 `UserPromptSubmit` | 사용자가 eGovFrame, egovframework, 표준프레임워크 같은 신호를 주면 표준프레임워크 맥락이 필요합니다 | 공식 포털 기반 맥락을 프롬프트에 더해 일반 Spring 답변으로 흐르지 않게 합니다 |
 | 도구를 쓰기 직전 `PreToolUse` | 삭제, 이동, 덮어쓰기 같은 명령은 실수하면 복구가 어렵습니다 | eGovFrame 또는 플러그인 핵심 경로를 건드리는 destructive command를 막습니다 |
 | 권한 요청이 날 때 `PermissionRequest` | 위험한 명령은 승인 전에 한 번 더 걸러야 합니다 | 보호 경로에 대한 destructive approval request를 거부합니다 |
 | 파일을 고친 직후 `PostToolUse` | 문제는 코드를 쓴 뒤 바로 보는 것이 가장 싸게 고칠 수 있습니다 | scanner를 돌려 controller SQL, mapper, transaction, secret 같은 문제를 찾습니다 |
-| subagent가 시작될 때 `SubagentStart` | 다른 에이전트도 같은 기준으로 일해야 합니다 | subagent에게도 eGovFrame 맥락을 전달합니다 |
-| subagent가 끝나려 할 때 `SubagentStop` | 발견된 문제가 남았는데 끝내면 놓치기 쉽습니다 | 추적 중인 finding이 남아 있으면 종료를 막습니다 |
+| subagent가 시작될 때 `SubagentStart` | eGovFrame 작업을 맡은 다른 에이전트도 같은 기준으로 일해야 합니다 | subagent 요청에 eGovFrame 신호가 있을 때만 맥락을 전달합니다 |
+| subagent가 끝나려 할 때 `SubagentStop` | 이미 발견된 문제가 남았는데 끝내면 놓치기 쉽습니다 | 현재 프로젝트의 추적 중인 blocking finding이 있을 때만 종료를 막습니다 |
 | 대화가 압축된 뒤 `PostCompact` | 긴 작업 중 압축이 되면 중요한 기준이 빠질 수 있습니다 | eGovFrame guard context를 다시 복원합니다 |
-| 턴을 끝내기 직전 `Stop` | 마지막에 남은 blocking finding을 한 번 더 봐야 합니다 | 필요하면 에이전트가 한 번 더 계속 작업하게 합니다 |
+| 턴을 끝내기 직전 `Stop` | 이전 hook에서 기록한 blocking finding이 남았는지 확인해야 합니다 | 현재 프로젝트에 기록된 문제가 있을 때만 에이전트가 한 번 더 계속 작업하게 합니다 |
 
 위험한 shell command를 정말 실행해야 한다면 command에 `egovframe-guardian:allow-destructive`를 명시해야 합니다. 이 token은 실수로 삭제성 명령이 통과하지 않게 만드는 확인 장치입니다.
 
@@ -165,63 +162,9 @@ config/egovframe-guardian.json
 
 Rule severity와 suppression은 데이터 기반이므로 scanner code를 수정하지 않고 팀별로 조정할 수 있습니다.
 
-## 로컬 검증
+## 개발자 문서
 
-```bash
-python -m json.tool .codex-plugin/plugin.json
-python -m json.tool .claude-plugin/plugin.json
-python -m json.tool .agents/plugins/marketplace.json
-python -m json.tool .claude-plugin/marketplace.json
-python scripts/validate_release_package.py .
-python scripts/score_maturity.py . --fail-under 130
-uv run --with basedpyright basedpyright scripts tests
-uv run --with ruff ruff check .
-uv run --with pytest pytest
-uv run --with pytest --with pytest-cov pytest --cov=egovframe_guard_core --cov=egovframe_guard_hooks --cov=egovframe_guard_state --cov-report=term-missing --cov-fail-under=80
-```
-
-Claude Code가 설치되어 있다면:
-
-```bash
-claude plugin validate .
-```
-
-Codex plugin creator tooling이 설치되어 있다면:
-
-```bash
-python ~/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py .
-```
-
-## 릴리즈 흐름
-
-Pull request와 push는 JSON validation, Python compile check, strict `basedpyright`, bundled skill validation, reference coverage audit, pytest, coverage, maturity scoring, public release metadata validation을 실행합니다.
-
-Semantic version tag로 릴리즈합니다.
-
-```bash
-git tag vX.Y.Z
-git push origin vX.Y.Z
-```
-
-Release workflow는 `.zip`과 `.tar.gz` archive를 만들고, SHA-256 checksum을 출력하고, GitHub Release를 생성합니다.
-
-## 저장소 지도
-
-```text
-README.md                             한국어 기본 README
-README.en.md                          English README
-.agents/plugins/marketplace.json      Codex marketplace catalog
-.codex-plugin/plugin.json             Codex plugin manifest
-.claude-plugin/plugin.json            Claude Code plugin manifest
-.claude-plugin/marketplace.json       Claude Code marketplace catalog
-assets/egovframe-guardian-mascot-retro.png README mascot logo
-hooks/hooks.json                      Lifecycle hook configuration
-scripts/egovframe_guard.py            Scanner and hook entrypoint
-scripts/egovframe_distribution.py     Distribution ZIP inspector
-scripts/egovframe_distribution_core.py Distribution inspection logic
-skills/egovframe-developer/           Bundled eGovFrame skill and references
-tests/                                Guard and hook tests
-```
+플러그인을 수정하거나 배포하려는 관리자는 [development notes](docs/development.md)를 보세요. 일반 사용자는 위 설치와 사용 방법만 알면 됩니다.
 
 ## 출처
 
@@ -235,10 +178,6 @@ Bundled crawl record와 repository atlas는 개발 가이드를 위한 자료입
 ## 라이선스
 
 이 저장소의 코드, 문서, 생성된 마스코트 asset은 [MIT License](LICENSE)로 배포됩니다. 이 플러그인이 참고하거나 요약한 upstream eGovFrame 자료는 각 원 출처의 조건을 따릅니다.
-
-## 현재 배포 메모
-
-공식 Codex Plugin Directory의 self-serve publishing은 아직 일반 공개되어 있지 않아, 이 저장소는 public self-hosted Codex marketplace catalog를 제공합니다. Claude Code community marketplace submission은 로컬 검증 이후 Anthropic review가 필요합니다.
 
 ## 한계
 
