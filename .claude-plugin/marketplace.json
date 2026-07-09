@@ -4,7 +4,7 @@
     "name": "eGovFrame Guardian Maintainers"
   },
   "description": "Public marketplace catalog for the eGovFrame Guardian Claude Code plugin.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "plugins": [
     {
       "name": "egovframe-guardian",
@@ -12,10 +12,10 @@
       "source": {
         "source": "github",
         "repo": "unnest-wintenboy/egovframe-guardian",
-        "ref": "main"
+        "ref": "v0.1.1"
       },
       "description": "eGovFrame development guidance, examples, and standard-compliance guardrails.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "eGovFrame Guardian Maintainers"
       },

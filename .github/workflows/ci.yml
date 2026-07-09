@@ -27,7 +27,7 @@ jobs:
           python -m json.tool config/egovframe-guardian.json >/tmp/policy.json
       - name: Compile scripts
         run: |
-          python -m py_compile scripts/egovframe_distribution.py scripts/egovframe_distribution_core.py scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py scripts/validate_release_package.py skills/egovframe-developer/scripts/audit_coverage.py tests/test_distribution.py tests/test_guard.py tests/test_hook_lifecycle.py tests/test_hook_state.py
+          python -m py_compile scripts/egovframe_distribution.py scripts/egovframe_distribution_core.py scripts/egovframe_guard.py scripts/egovframe_guard_context.py scripts/egovframe_guard_core.py scripts/egovframe_guard_hooks.py scripts/egovframe_guard_state.py scripts/score_maturity.py scripts/validate_release_package.py skills/egovframe-developer/scripts/audit_coverage.py tests/test_codex_e2e.py tests/test_distribution.py tests/test_guard.py tests/test_hook_lifecycle.py tests/test_hook_state.py tests/test_sample_matrix.py
       - name: Type check
         run: |
           uv run --with basedpyright basedpyright scripts tests

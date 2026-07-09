@@ -71,4 +71,4 @@ jobs:
             dist/SHA256SUMS.txt \
             --target "$GITHUB_SHA" \
             --title "eGovFrame Guardian ${RELEASE_TAG}" \
-            --notes "Dual Codex and Claude Code plugin release with public marketplace catalogs, eGovFrame development skill bundle, local guardrail hooks, scanner tests, and packaged release archives."
+            --notes "Codex plugin release with public repo marketplace catalog, eGovFrame development skill bundle, local guardrail hooks, scanner tests, and packaged release archives."

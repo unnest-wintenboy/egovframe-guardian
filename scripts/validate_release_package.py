@@ -11,12 +11,14 @@ JsonValue: TypeAlias = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
 
 LOCAL_USER_MARKER: Final = "SIL"
 INTERNAL_MARKER: Final = "internal"
+EXPECTED_VERSION: Final = "0.1.1"
 FORBIDDEN_TEXT: Final = (
     "C:" + "\\Users\\" + LOCAL_USER_MARKER,
     "C:" + "/Users/" + LOCAL_USER_MARKER,
     "Users\\" + LOCAL_USER_MARKER,
     "Users/" + LOCAL_USER_MARKER,
     "0.1.0-" + INTERNAL_MARKER + "-beta",
+    EXPECTED_VERSION + "-" + INTERNAL_MARKER + "-beta",
     INTERNAL_MARKER + " team beta",
     "private GitHub" + " source control",
     "local" + " maintainers",
@@ -82,7 +84,7 @@ def validate_codex_manifest(root: Path, errors: list[str]) -> None:
     manifest = load_object(root / ".codex-plugin" / "plugin.json")
     interface = as_dict(manifest.get("interface"))
     require(manifest.get("name") == "egovframe-guardian", "Codex manifest name must be egovframe-guardian", errors)
-    require(manifest.get("version") == "0.1.0", "Codex manifest version must be 0.1.0", errors)
+    require(manifest.get("version") == EXPECTED_VERSION, f"Codex manifest version must be {EXPECTED_VERSION}", errors)
     require(str(manifest.get("repository", "")).startswith("https://github.com/"), "Codex manifest repository must be public GitHub URL", errors)
     require(str(manifest.get("homepage", "")).startswith("https://github.com/"), "Codex manifest homepage must be public GitHub URL", errors)
     require(str(interface.get("privacyPolicyURL", "")).startswith("https://github.com/"), "Codex privacyPolicyURL must be public", errors)
@@ -92,7 +94,7 @@ def validate_codex_manifest(root: Path, errors: list[str]) -> None:
 def validate_claude_manifest(root: Path, errors: list[str]) -> None:
     manifest = load_object(root / ".claude-plugin" / "plugin.json")
     require(manifest.get("name") == "egovframe-guardian", "Claude manifest name must be egovframe-guardian", errors)
-    require(manifest.get("version") == "0.1.0", "Claude manifest version must be 0.1.0", errors)
+    require(manifest.get("version") == EXPECTED_VERSION, f"Claude manifest version must be {EXPECTED_VERSION}", errors)
     require(manifest.get("skills") == "./skills", "Claude manifest must expose bundled skills", errors)
     require(manifest.get("hooks") == "./hooks/hooks.json", "Claude manifest must expose bundled hooks", errors)
 
@@ -113,6 +115,7 @@ def validate_codex_marketplace(root: Path, errors: list[str]) -> None:
     require(entry.get("name") == "egovframe-guardian", "Codex marketplace entry name mismatch", errors)
     require(source.get("source") == "url", "Codex marketplace must use Git URL source for root plugin", errors)
     require(source.get("url") == "https://github.com/unnest-wintenboy/egovframe-guardian.git", "Codex marketplace URL mismatch", errors)
+    require(source.get("ref") == f"v{EXPECTED_VERSION}", f"Codex marketplace ref must be v{EXPECTED_VERSION}", errors)
     require(policy.get("installation") == "AVAILABLE", "Codex marketplace installation policy missing", errors)
     require(policy.get("authentication") == "ON_INSTALL", "Codex marketplace authentication policy missing", errors)
     require(bool(entry.get("category")), "Codex marketplace category missing", errors)
@@ -135,7 +138,8 @@ def validate_claude_marketplace(root: Path, errors: list[str]) -> None:
     require(entry.get("name") == "egovframe-guardian", "Claude marketplace entry name mismatch", errors)
     require(source.get("source") == "github", "Claude marketplace must use GitHub source", errors)
     require(source.get("repo") == "unnest-wintenboy/egovframe-guardian", "Claude marketplace repo mismatch", errors)
-    require(entry.get("version") == "0.1.0", "Claude marketplace entry version must be 0.1.0", errors)
+    require(source.get("ref") == f"v{EXPECTED_VERSION}", f"Claude marketplace ref must be v{EXPECTED_VERSION}", errors)
+    require(entry.get("version") == EXPECTED_VERSION, f"Claude marketplace entry version must be {EXPECTED_VERSION}", errors)
     require(bool(entry.get("description")), "Claude marketplace entry description missing", errors)
 
 

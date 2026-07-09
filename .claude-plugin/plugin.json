@@ -2,7 +2,7 @@
   "name": "egovframe-guardian",
   "displayName": "eGovFrame Guardian",
   "description": "Claude Code plugin for eGovFrame development guidance, examples, and standard-compliance guardrails.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "eGovFrame Guardian Maintainers"
   },
