@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import os
+import re
 import sys
 from pathlib import Path
 from typing import Final, TypeAlias
@@ -11,14 +13,12 @@ JsonValue: TypeAlias = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
 
 LOCAL_USER_MARKER: Final = "SIL"
 INTERNAL_MARKER: Final = "internal"
-EXPECTED_VERSION: Final = "0.1.1"
-FORBIDDEN_TEXT: Final = (
+VERSION_PATTERN: Final = re.compile(r'(?m)^version\s*=\s*"([^"]+)"\s*$')
+FORBIDDEN_TEXT_BASE: Final = (
     "C:" + "\\Users\\" + LOCAL_USER_MARKER,
     "C:" + "/Users/" + LOCAL_USER_MARKER,
     "Users\\" + LOCAL_USER_MARKER,
     "Users/" + LOCAL_USER_MARKER,
-    "0.1.0-" + INTERNAL_MARKER + "-beta",
-    EXPECTED_VERSION + "-" + INTERNAL_MARKER + "-beta",
     INTERNAL_MARKER + " team beta",
     "private GitHub" + " source control",
     "local" + " maintainers",
@@ -57,6 +57,21 @@ def load_object(path: Path) -> dict[str, JsonValue]:
     return loaded
 
 
+def project_version(root: Path) -> str:
+    text = (root / "pyproject.toml").read_text(encoding="utf-8")
+    match = VERSION_PATTERN.search(text)
+    if match is None:
+        raise ValueError("pyproject.toml must contain a project version")
+    return match.group(1)
+
+
+def forbidden_text(version: str) -> tuple[str, ...]:
+    return FORBIDDEN_TEXT_BASE + (
+        "0.1.0-" + INTERNAL_MARKER + "-beta",
+        version + "-" + INTERNAL_MARKER + "-beta",
+    )
+
+
 def require(condition: bool, message: str, errors: list[str]) -> None:
     if not condition:
         errors.append(message)
@@ -66,7 +81,7 @@ def as_dict(value: JsonValue | None) -> dict[str, JsonValue]:
     return value if isinstance(value, dict) else {}
 
 
-def scan_forbidden_text(root: Path) -> list[str]:
+def scan_forbidden_text(root: Path, version: str) -> list[str]:
     findings: list[str] = []
     for path in root.rglob("*"):
         if any(part in SKIP_DIRS for part in path.parts):
@@ -74,32 +89,32 @@ def scan_forbidden_text(root: Path) -> list[str]:
         if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
-        for forbidden in FORBIDDEN_TEXT:
+        for forbidden in forbidden_text(version):
             if forbidden in text:
                 findings.append(f"{path.relative_to(root)} contains forbidden public-release text: {forbidden}")
     return findings
 
 
-def validate_codex_manifest(root: Path, errors: list[str]) -> None:
+def validate_codex_manifest(root: Path, version: str, errors: list[str]) -> None:
     manifest = load_object(root / ".codex-plugin" / "plugin.json")
     interface = as_dict(manifest.get("interface"))
     require(manifest.get("name") == "egovframe-guardian", "Codex manifest name must be egovframe-guardian", errors)
-    require(manifest.get("version") == EXPECTED_VERSION, f"Codex manifest version must be {EXPECTED_VERSION}", errors)
+    require(manifest.get("version") == version, f"Codex manifest version must be {version}", errors)
     require(str(manifest.get("repository", "")).startswith("https://github.com/"), "Codex manifest repository must be public GitHub URL", errors)
     require(str(manifest.get("homepage", "")).startswith("https://github.com/"), "Codex manifest homepage must be public GitHub URL", errors)
     require(str(interface.get("privacyPolicyURL", "")).startswith("https://github.com/"), "Codex privacyPolicyURL must be public", errors)
     require(str(interface.get("termsOfServiceURL", "")).startswith("https://github.com/"), "Codex termsOfServiceURL must be public", errors)
 
 
-def validate_claude_manifest(root: Path, errors: list[str]) -> None:
+def validate_claude_manifest(root: Path, version: str, errors: list[str]) -> None:
     manifest = load_object(root / ".claude-plugin" / "plugin.json")
     require(manifest.get("name") == "egovframe-guardian", "Claude manifest name must be egovframe-guardian", errors)
-    require(manifest.get("version") == EXPECTED_VERSION, f"Claude manifest version must be {EXPECTED_VERSION}", errors)
+    require(manifest.get("version") == version, f"Claude manifest version must be {version}", errors)
     require(manifest.get("skills") == "./skills", "Claude manifest must expose bundled skills", errors)
     require(manifest.get("hooks") == "./hooks/hooks.json", "Claude manifest must expose bundled hooks", errors)
 
 
-def validate_codex_marketplace(root: Path, errors: list[str]) -> None:
+def validate_codex_marketplace(root: Path, version: str, errors: list[str]) -> None:
     marketplace = load_object(root / ".agents" / "plugins" / "marketplace.json")
     plugins = marketplace.get("plugins")
     require(marketplace.get("name") == "egovframe-guardian", "Codex marketplace name must be egovframe-guardian", errors)
@@ -115,13 +130,13 @@ def validate_codex_marketplace(root: Path, errors: list[str]) -> None:
     require(entry.get("name") == "egovframe-guardian", "Codex marketplace entry name mismatch", errors)
     require(source.get("source") == "url", "Codex marketplace must use Git URL source for root plugin", errors)
     require(source.get("url") == "https://github.com/unnest-wintenboy/egovframe-guardian.git", "Codex marketplace URL mismatch", errors)
-    require(source.get("ref") == f"v{EXPECTED_VERSION}", f"Codex marketplace ref must be v{EXPECTED_VERSION}", errors)
+    require(source.get("ref") == f"v{version}", f"Codex marketplace ref must be v{version}", errors)
     require(policy.get("installation") == "AVAILABLE", "Codex marketplace installation policy missing", errors)
     require(policy.get("authentication") == "ON_INSTALL", "Codex marketplace authentication policy missing", errors)
     require(bool(entry.get("category")), "Codex marketplace category missing", errors)
 
 
-def validate_claude_marketplace(root: Path, errors: list[str]) -> None:
+def validate_claude_marketplace(root: Path, version: str, errors: list[str]) -> None:
     marketplace = load_object(root / ".claude-plugin" / "marketplace.json")
     plugins = marketplace.get("plugins")
     owner = as_dict(marketplace.get("owner"))
@@ -138,20 +153,29 @@ def validate_claude_marketplace(root: Path, errors: list[str]) -> None:
     require(entry.get("name") == "egovframe-guardian", "Claude marketplace entry name mismatch", errors)
     require(source.get("source") == "github", "Claude marketplace must use GitHub source", errors)
     require(source.get("repo") == "unnest-wintenboy/egovframe-guardian", "Claude marketplace repo mismatch", errors)
-    require(source.get("ref") == f"v{EXPECTED_VERSION}", f"Claude marketplace ref must be v{EXPECTED_VERSION}", errors)
-    require(entry.get("version") == EXPECTED_VERSION, f"Claude marketplace entry version must be {EXPECTED_VERSION}", errors)
+    require(source.get("ref") == f"v{version}", f"Claude marketplace ref must be v{version}", errors)
+    require(entry.get("version") == version, f"Claude marketplace entry version must be {version}", errors)
     require(bool(entry.get("description")), "Claude marketplace entry description missing", errors)
+
+
+def validate_release_tag(version: str, errors: list[str]) -> None:
+    release_tag = os.environ.get("RELEASE_TAG")
+    if release_tag is None or not release_tag.strip():
+        return
+    require(release_tag == f"v{version}", f"RELEASE_TAG must be v{version}", errors)
 
 
 def main(argv: list[str]) -> int:
     root = Path(argv[0]).resolve() if argv else Path.cwd()
     errors: list[str] = []
     try:
-        validate_codex_manifest(root, errors)
-        validate_claude_manifest(root, errors)
-        validate_codex_marketplace(root, errors)
-        validate_claude_marketplace(root, errors)
-        errors.extend(scan_forbidden_text(root))
+        version = project_version(root)
+        validate_codex_manifest(root, version, errors)
+        validate_claude_manifest(root, version, errors)
+        validate_codex_marketplace(root, version, errors)
+        validate_claude_marketplace(root, version, errors)
+        validate_release_tag(version, errors)
+        errors.extend(scan_forbidden_text(root, version))
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         errors.append(str(exc))
 

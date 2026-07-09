@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Publish the automatic pre-extraction ZIP inspection hook through the marketplace release channel.
+- Derive release metadata validation from `pyproject.toml` so marketplace refs must match the packaged version.
+
 ## 0.1.1
 
 - Refocus the Korean and English READMEs on everyday user installation and usage.

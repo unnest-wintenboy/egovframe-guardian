@@ -1,6 +1,6 @@
 {
   "name": "egovframe-guardian",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Codex plugin for eGovFrame development guidance, examples, and standard-compliance guardrails.",
   "author": {
     "name": "eGovFrame Guardian Maintainers"

@@ -40,6 +40,12 @@ git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
+Before tagging, set `pyproject.toml`, both plugin manifests, and both marketplace catalogs to the
+same version. Marketplace catalogs are intentionally pinned to `vX.Y.Z`, not `main`; this keeps
+public installs on validated releases. `scripts/validate_release_package.py` derives the expected
+version from `pyproject.toml` and fails CI/release validation when a manifest, marketplace ref, or
+`RELEASE_TAG` does not match.
+
 The release workflow publishes `.zip` and `.tar.gz` archives, emits SHA-256 checksums, and creates a GitHub Release.
 
 ## Publishing Status
