@@ -5,7 +5,7 @@
 # eGovFrame Guardian
 
 <p align="center">
-  <img src="assets/egovframe-guardian-mascot.png" alt="eGovFrame Guardian mascot" width="180">
+  <img src="assets/egovframe-guardian-mascot-retro.png" alt="eGovFrame Guardian retro pixel mascot" width="180">
 </p>
 
 <p align="center">
@@ -214,7 +214,7 @@ README.en.md                          English README
 .codex-plugin/plugin.json             Codex plugin manifest
 .claude-plugin/plugin.json            Claude Code plugin manifest
 .claude-plugin/marketplace.json       Claude Code marketplace catalog
-assets/egovframe-guardian-mascot.png  README mascot logo
+assets/egovframe-guardian-mascot-retro.png README mascot logo
 hooks/hooks.json                      Lifecycle hook configuration
 scripts/egovframe_guard.py            Scanner and hook entrypoint
 scripts/egovframe_distribution.py     Distribution ZIP inspector
