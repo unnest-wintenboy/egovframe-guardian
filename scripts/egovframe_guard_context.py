@@ -58,9 +58,10 @@ PROMPT_CONTEXT: Final = (
     "official portal areas: introduction/architecture, development guide, downloads, developer "
     "participation, technical support, and compatibility confirmation. Current portal highlights "
     "include v5.0.0, VS Code Extension, AI RAG examples, Istio/OpenTelemetry operating guides, "
-    "and Flutter device API programs. For portal ZIP distributions, verify checksums and inspect "
-    "with scripts/egovframe_distribution.py before extraction. Prefer Controller-Service-Mapper "
-    "layering and run the eGovFrame Guardian scan/Stop gate before claiming compliance."
+    "and Flutter device API programs. Portal ZIP extraction is automatically inspected by the "
+    "PreToolUse hook when a local archive is extracted; use scripts/egovframe_distribution.py for "
+    "explicit checksum comparison. Prefer Controller-Service-Mapper layering and run the "
+    "eGovFrame Guardian scan/Stop gate before claiming compliance."
 )
 COMPACT_CONTEXT: Final = (
     "eGovFrame Guardian: after compaction, reload the egovframe-developer skill before eGovFrame "
@@ -72,6 +73,6 @@ SUBAGENT_CONTEXT: Final = (
     "Subagent eGovFrame context: use egovframe-developer evidence first. The portal foregrounds "
     "v5.0.0, development guide/downloads, technical support, compatibility confirmation, VS Code "
     "Extension, AI RAG examples, Istio/OpenTelemetry operating guides, and Flutter device APIs. "
-    "Inspect portal ZIP distributions before extraction. Do not finish without checking "
-    "Controller-Service-Mapper layering and local guard findings."
+    "Portal ZIP extraction is automatically inspected before local archive extraction. Do not "
+    "finish without checking Controller-Service-Mapper layering and local guard findings."
 )

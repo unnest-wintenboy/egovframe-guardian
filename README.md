@@ -65,7 +65,7 @@ claude --plugin-dir .
 | `egovframe-developer` skill | 에이전트가 표준프레임워크 방식으로 일하도록 돕는 작업 설명서 | 코드 작성, 리뷰, 마이그레이션, 호환성 확인을 맡길 때 |
 | 포털 기반 reference | 공식 eGovFrame 내용을 읽기 쉽게 정리한 참고 자료 | 에이전트가 일반 Spring 방식으로만 답하지 않게 하고 싶을 때 |
 | 예제 코드 | 바로 따라 볼 수 있는 MVC, Boot REST, MyBatis, security, batch, MSA 예제 | 새 기능의 기본 모양을 잡을 때 |
-| ZIP 다운로드와 배포파일 사용 | 포털 ZIP 파일명, 페이지 URL, 첨부 URL, 크기, checksum을 찾고 받은 ZIP을 풀기 전에 검사 | 표준프레임워크 사이트의 배포파일을 프로젝트에 적용할 때 |
+| ZIP 다운로드와 배포파일 사용 | ZIP 추출 전 자동 검사와 포털 ZIP 파일명, URL, 크기, checksum 참고 정보 | 표준프레임워크 사이트의 배포파일을 프로젝트에 적용할 때 |
 | loop engineering guide | 큰 작업을 작은 반복으로 나누고, 매번 증거와 검증을 남기는 운영 방식 | 구현, 리뷰, 마이그레이션, ZIP 적용이 한 번에 끝나기 어려울 때 |
 | hook guardrail | 사용자가 직접 부르지 않아도 자동으로 켜지는 안전장치 | 위험한 명령을 막거나, 파일 수정 뒤 문제를 바로 찾을 때 |
 | scanner | 흔한 eGovFrame 실수를 찾는 검사기 | controller SQL, mapper namespace, transaction 누락 등을 확인할 때 |
@@ -102,7 +102,7 @@ Hook은 사용자가 직접 실행하는 명령이 아닙니다. Codex나 Claude
 | --- | --- | --- |
 | 세션이 시작될 때 `SessionStart` | 플러그인이 켜져 있다는 사실을 에이전트가 바로 알아야 합니다 | eGovFrame skill과 guardrail이 준비됐다고 알려줍니다 |
 | 프롬프트를 보낼 때 `UserPromptSubmit` | 사용자가 eGovFrame, egovframework, 표준프레임워크 같은 신호를 주면 표준프레임워크 맥락이 필요합니다 | 공식 포털 기반 맥락을 프롬프트에 더해 일반 Spring 답변으로 흐르지 않게 합니다 |
-| 도구를 쓰기 직전 `PreToolUse` | 삭제, 이동, 덮어쓰기 같은 명령은 실수하면 복구가 어렵습니다 | eGovFrame 또는 플러그인 핵심 경로를 건드리는 destructive command를 막습니다 |
+| 도구를 쓰기 직전 `PreToolUse` | 삭제, 이동, 덮어쓰기, ZIP 추출 명령은 실수하면 복구가 어렵습니다 | eGovFrame 또는 플러그인 핵심 경로를 건드리는 destructive command를 막고, 로컬 ZIP은 추출 전에 자동 검사합니다 |
 | 권한 요청이 날 때 `PermissionRequest` | 위험한 명령은 승인 전에 한 번 더 걸러야 합니다 | 보호 경로에 대한 destructive approval request를 거부합니다 |
 | 파일을 고친 직후 `PostToolUse` | 문제는 코드를 쓴 뒤 바로 보는 것이 가장 싸게 고칠 수 있습니다 | scanner를 돌려 controller SQL, mapper, transaction, secret 같은 문제를 찾습니다 |
 | subagent가 시작될 때 `SubagentStart` | eGovFrame 작업을 맡은 다른 에이전트도 같은 기준으로 일해야 합니다 | subagent 요청에 eGovFrame 신호가 있을 때만 맥락을 전달합니다 |
@@ -112,9 +112,11 @@ Hook은 사용자가 직접 실행하는 명령이 아닙니다. Codex나 Claude
 
 위험한 shell command를 정말 실행해야 한다면 command에 `egovframe-guardian:allow-destructive`를 명시해야 합니다. 이 token은 실수로 삭제성 명령이 통과하지 않게 만드는 확인 장치입니다.
 
-## 스캐너 규칙
+## 자동 스캐너
 
-직접 스캔하려면:
+스캐너는 보통 파일 edit/write 도구가 끝난 직후 자동으로 실행됩니다. 아래 규칙 목록은 사용자가 외워서 직접 실행하라는 뜻이 아니라, hook이 무엇을 보는지 이해하고 팀에 맞게 조정할 수 있도록 공개한 것입니다.
+
+직접 실행은 CI 단계, 수동 재검증, 빠른 리포트가 필요할 때만 쓰면 됩니다.
 
 ```bash
 python scripts/egovframe_guard.py --mode scan --root .
@@ -131,9 +133,11 @@ python scripts/egovframe_guard.py --mode scan --root .
 
 직접 scan mode에서는 high-confidence error가 exit code `2`를 반환하고, warning은 exit code `0`을 반환합니다. Hook mode에서는 host가 context를 추가하거나, 지원되는 tool call을 거부하거나, hook contract에 따라 턴을 계속할 수 있도록 structured hook JSON을 반환합니다.
 
-## 배포 ZIP 검사
+## 자동 배포 ZIP 검사
 
-표준프레임워크 사이트에서 ZIP을 받았다면 바로 풀지 말고 먼저 검사하세요.
+shell/tool 명령이 로컬 ZIP archive를 추출하려고 하면 `PreToolUse`가 먼저 자동 검사합니다. ZIP-slip 위험 경로가 있거나 읽을 수 없는 archive면 추출 전에 막고, 안전한 archive면 짧은 리포트와 함께 임시 폴더나 sandbox에 풀라는 안내를 붙입니다.
+
+포털 checksum과 비교하거나 JSON 리포트가 필요할 때는 inspector를 직접 실행하면 됩니다.
 
 ```bash
 python scripts/egovframe_distribution.py inspect --zip path/to/package.zip --expected-sha1 <portal-sha1> --json

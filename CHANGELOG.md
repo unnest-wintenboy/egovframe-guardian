@@ -7,6 +7,7 @@
 - Narrow final Stop/SubagentStop gates to tracked findings for the current project root.
 - Reduce generic hook false positives and expand Codex/Claude host tool matcher coverage.
 - Add Codex hook lifecycle E2E tests.
+- Add automatic pre-extraction ZIP inspection for local distribution archives.
 - Add classic MVC, Boot REST, MSA service, and batch sample scan coverage.
 - Pin the public Codex marketplace entry to the `v0.1.1` release tag.
 

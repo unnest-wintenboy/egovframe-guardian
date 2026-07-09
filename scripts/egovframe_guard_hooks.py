@@ -14,6 +14,7 @@ from egovframe_guard_context import (
     SUBAGENT_CONTEXT,
 )
 from egovframe_guard_core import JsonValue, Policy, render_report, scan
+from egovframe_guard_zip import zip_pre_tool_payload
 from egovframe_guard_state import gate_snapshots, record_pending, record_scan
 
 HOOK_INPUT_MODES: Final = {
@@ -96,6 +97,11 @@ def pre_tool_payload(payload: JsonValue, root: Path | None = None) -> dict[str, 
     command = command_from_payload(payload)
     if not command.strip() or CONFIRM_TOKEN in command.lower():
         return None
+    if root is not None:
+        zip_response = zip_pre_tool_payload(command, root)
+        if zip_response is not None:
+            record_pending(root, "A distribution ZIP extraction was attempted and must be followed by adaptation checks.")
+            return zip_response
     critical_markers = EGOV_CRITICAL_MARKERS + PLUGIN_CRITICAL_MARKERS
     is_destructive = contains_marker(command, DESTRUCTIVE_MARKERS)
     touches_critical = contains_marker(command, critical_markers)

@@ -65,7 +65,7 @@ Plugin hooks run locally. Review and trust the hook definitions before enabling 
 | `egovframe-developer` skill | A work guide that helps the agent follow eGovFrame patterns | When asking for implementation, review, migration, or compatibility checks |
 | Portal-based references | Easy-to-use notes based on official eGovFrame material | When you want the agent to avoid generic Spring-only answers |
 | Example code | Ready shapes for MVC, Boot REST, MyBatis, security, batch, and MSA work | When starting a new feature or asking for a reference implementation |
-| ZIP download and distribution use | Notes for portal ZIP filenames, page URLs, attachment URLs, sizes, checksums, and safe pre-extraction inspection | When applying a standard framework distribution package to a project |
+| ZIP download and distribution use | Automatic pre-extraction inspection plus portal ZIP filenames, URLs, sizes, and checksums | When applying a standard framework distribution package to a project |
 | Loop engineering guide | A way to split larger work into bounded iterations with evidence and verification each time | When implementation, review, migration, or ZIP adoption cannot be done safely in one pass |
 | Hook guardrails | Safety checks that run automatically while the agent works | When you want risky commands blocked and edits checked right away |
 | Scanner | A checker for common eGovFrame mistakes | When checking controller SQL, mapper namespaces, transactions, and runtime metadata |
@@ -102,7 +102,7 @@ Hooks are not commands you run by hand. Codex or Claude Code calls them automati
 | --- | --- | --- |
 | Session start `SessionStart` | The agent should know the plugin is active right away | It announces that the eGovFrame skill and guardrails are ready |
 | Prompt submit `UserPromptSubmit` | Prompts that mention eGovFrame, egovframework, or the Korean standard framework need framework context | It adds portal-aligned context so the answer does not drift into generic Spring guidance |
-| Before a tool call `PreToolUse` | Delete, move, and overwrite commands can be hard to recover from | It blocks destructive commands against eGovFrame or plugin-critical paths |
+| Before a tool call `PreToolUse` | Delete, move, overwrite, and ZIP extraction commands can be hard to recover from | It blocks destructive commands against eGovFrame/plugin-critical paths and automatically inspects local ZIP archives before extraction |
 | Permission request `PermissionRequest` | Risky commands should be filtered before approval | It denies destructive approval requests for protected paths |
 | After edits or writes `PostToolUse` | Problems are cheapest to fix right after code changes | It runs the scanner for controller SQL, mapper, transaction, secret, and metadata issues |
 | Subagent start `SubagentStart` | Other agents working on eGovFrame need the same standard | It adds context only when the subagent request includes eGovFrame signals |
@@ -112,9 +112,11 @@ Hooks are not commands you run by hand. Codex or Claude Code calls them automati
 
 If a destructive shell command is truly needed, the command must include `egovframe-guardian:allow-destructive`. That token is an intentional confirmation step, not a normal everyday option.
 
-## Scanner Rules
+## Automatic Scanner
 
-Run the scanner directly:
+The scanner normally runs automatically after edit/write tools. The rule list is here so teams can understand and tune what the hook checks, not because users should remember to run it by hand.
+
+Run it directly only when you want a CI step, a manual re-check, or a quick report:
 
 ```bash
 python scripts/egovframe_guard.py --mode scan --root .
@@ -131,9 +133,11 @@ It currently checks for:
 
 In direct scan mode, high-confidence errors return exit code `2`; warnings return exit code `0`. In hook mode, the plugin returns structured hook JSON so the host can add context, deny supported tool calls, or continue the turn through the hook contract.
 
-## Distribution ZIP Inspection
+## Automatic Distribution ZIP Inspection
 
-When you download a ZIP from the eGovFrame portal, inspect it before extracting it.
+When a shell/tool command tries to extract a local ZIP archive, `PreToolUse` automatically inspects it first. Unsafe ZIP paths are blocked before extraction. Safe archives get a short report and a reminder to extract into a temporary or sandbox directory.
+
+Run the inspector directly when you want to compare a portal checksum or produce a JSON report:
 
 ```bash
 python scripts/egovframe_distribution.py inspect --zip path/to/package.zip --expected-sha1 <portal-sha1> --json

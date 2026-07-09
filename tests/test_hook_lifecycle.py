@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 from typing import TypeAlias
 
@@ -55,6 +56,12 @@ def make_bad_project(root: Path) -> None:
     )
 
 
+def make_zip(path: Path, entries: dict[str, str]) -> None:
+    with zipfile.ZipFile(path, "w") as archive:
+        for name, body in entries.items():
+            archive.writestr(name, body)
+
+
 def test_root_from_payload_prefers_hook_cwd(tmp_path: Path) -> None:
     result = root_from_payload({"cwd": str(tmp_path)}, Path("fallback"))
     assert result == tmp_path
@@ -82,6 +89,35 @@ def test_pre_tool_payload_allows_generic_java_delete_path() -> None:
 def test_pre_tool_payload_allows_confirmed_destructive_command() -> None:
     command = "rm -rf src/main/java/egovframework # egovframe-guardian:allow-destructive"
     assert pre_tool_payload(tool_payload(command)) is None
+
+
+def test_pre_tool_payload_auto_inspects_safe_zip_extraction(tmp_path: Path) -> None:
+    archive = tmp_path / "egovframe-template.zip"
+    make_zip(archive, {"pom.xml": "<project><groupId>org.egovframe</groupId></project>"})
+
+    response = pre_tool_payload(tool_payload(f"unzip {archive} -d extracted"), tmp_path)
+
+    assert response is not None
+    hook_output = response["hookSpecificOutput"]
+    assert isinstance(hook_output, dict)
+    assert hook_output["hookEventName"] == "PreToolUse"
+    context = str(hook_output["additionalContext"])
+    assert "automatic ZIP inspection" in context
+    assert "type=source-project" in context
+
+
+def test_pre_tool_payload_blocks_unsafe_zip_extraction(tmp_path: Path) -> None:
+    archive = tmp_path / "egovframe-unsafe.zip"
+    make_zip(archive, {"../outside.txt": "nope", "pom.xml": "<project />"})
+
+    response = pre_tool_payload(tool_payload(f"Expand-Archive -Path {archive} -DestinationPath extracted"), tmp_path)
+
+    assert response is not None
+    hook_output = response["hookSpecificOutput"]
+    assert isinstance(hook_output, dict)
+    assert hook_output["hookEventName"] == "PreToolUse"
+    assert hook_output["permissionDecision"] == "deny"
+    assert "unsafe archive paths" in str(hook_output["permissionDecisionReason"])
 
 
 def test_prompt_payload_directly_matches_egov_terms() -> None:

@@ -3,9 +3,9 @@
 The plugin hooks add portal-aligned context, guard critical operations, scan after edits, restore context after compaction, and check tracked findings before Codex or a subagent stops. They implement the loop engineering controls documented in `skills/egovframe-developer/references/loop-engineering.md`.
 
 - `UserPromptSubmit`: injects eGovFrame standard-development context for matching prompts.
-- `PreToolUse`: denies destructive shell commands touching eGovFrame or plugin-critical paths unless explicitly confirmed with `egovframe-guardian:allow-destructive`.
+- `PreToolUse`: denies destructive shell commands touching eGovFrame or plugin-critical paths unless explicitly confirmed with `egovframe-guardian:allow-destructive`; automatically inspects local ZIP archives before extraction commands run.
 - `PermissionRequest`: denies approval requests for destructive eGovFrame/plugin-critical commands.
-- `PostToolUse`: runs a local scanner after file edit/write tools.
+- `PostToolUse`: runs the local scanner automatically after file edit/write tools.
 - `SubagentStart`: injects eGovFrame context only when the subagent task includes eGovFrame signals.
 - `SubagentStop`: blocks subagent completion only when tracked findings for the current project remain.
 - `PostCompact`: reminds Codex to reload eGovFrame context after compaction.

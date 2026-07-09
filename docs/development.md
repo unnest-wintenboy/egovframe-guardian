@@ -52,6 +52,7 @@ The hook policy follows the same practical shape as mature Codex/LazyCodex plugi
 
 - `SessionStart`, `UserPromptSubmit`, and `PostCompact` provide context.
 - `PreToolUse` and `PermissionRequest` block only destructive operations touching eGovFrame or plugin-critical paths.
+- `PreToolUse` automatically inspects local ZIP archives before common extraction commands such as `unzip`, `Expand-Archive`, `jar xf`, `7z x`, and `tar -xf`.
 - Hook matchers include common Codex and Claude Code shell/edit tool names so destructive guards and edit scans are not skipped by host-specific names.
 - `PostToolUse` is the primary scanner gate after edits.
 - `Stop` and `SubagentStop` do not perform surprise full-project scans. They only block when prior hooks recorded pending work or blocking findings for the current project root.
@@ -71,7 +72,7 @@ goal -> evidence -> plan -> act -> observe -> verdict
 Design intent:
 
 - The skill decides when a loop is warranted: implementation, migration, review/fix, source refresh, and distribution ZIP adoption.
-- Hooks provide brakes and observations: `PreToolUse`/`PermissionRequest` stop unsafe actions, `PostToolUse` observes edits with the scanner, and `Stop`/`SubagentStop` gate only tracked current-project findings.
+- Hooks provide brakes and observations: `PreToolUse`/`PermissionRequest` stop unsafe actions, `PreToolUse` inspects distribution ZIPs before extraction, `PostToolUse` observes edits with the scanner, and `Stop`/`SubagentStop` gate only tracked current-project findings.
 - The loop has explicit budgets: default 3 cycles, larger migrations up to 5, and repeated failures stop with a named failure label.
 - Maker/checker separation is preferred for larger work; when one agent performs both, the final response must name evidence, actions, verification, and remaining gaps.
 
@@ -89,6 +90,7 @@ README.en.md                           English README
 assets/egovframe-guardian-mascot-retro.png README mascot logo
 hooks/hooks.json                       Lifecycle hook configuration
 scripts/egovframe_guard.py             Scanner and hook entrypoint
+scripts/egovframe_guard_zip.py         Automatic ZIP extraction hook checks
 scripts/egovframe_distribution.py      Distribution ZIP inspector
 scripts/egovframe_distribution_core.py Distribution inspection logic
 skills/egovframe-developer/            Bundled eGovFrame skill and references

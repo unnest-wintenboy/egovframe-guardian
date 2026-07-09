@@ -33,7 +33,7 @@
             "type": "command",
             "command": "python3 \"${PLUGIN_ROOT}/scripts/egovframe_guard.py\" --mode pre-tool",
             "commandWindows": "python \"%PLUGIN_ROOT%\\scripts\\egovframe_guard.py\" --mode pre-tool",
-            "statusMessage": "Checking eGovFrame critical paths before tool use"
+            "statusMessage": "Checking eGovFrame paths and ZIP extraction before tool use"
           }
         ]
       }
